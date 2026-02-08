@@ -20,7 +20,6 @@ const memberSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// ✅ Custom validator using 'validate' property (no hooks, no next)
 memberSchema.path("email").validate(function (value) {
   if (!value && !this.phone) {
     throw new Error("A member must have either an email or a phone number");
