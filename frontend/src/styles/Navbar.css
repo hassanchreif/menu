@@ -1,0 +1,30 @@
+.navbar {
+  height: 70px;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  font-family: var(--font);
+}
+
+.navbar h1 {
+  font-size: 1.3rem;
+  color: var(--primary);
+}
+
+.navbar button {
+  background: transparent;
+  color: var(--primary);
+  border: 1px solid var(--primary);
+  padding: 0.4rem 1rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.navbar button:hover {
+  background: var(--primary);
+  color: var(--bg);
+}

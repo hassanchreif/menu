@@ -1,0 +1,43 @@
+.dashboard {
+  padding: 2rem;
+  min-height: calc(100vh - 70px);
+  background: var(--bg);
+  font-family: var(--font);
+  color: var(--text);
+}
+
+.dashboard h2 {
+  margin-bottom: 1.5rem;
+  color: var(--primary);
+}
+
+.members-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.member-card {
+  background: var(--card);
+  padding: 1rem 1.2rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.member-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.6);
+}
+
+.member-card strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--primary);
+}
+
+.member-card p {
+  color: var(--muted);
+  margin: 0;
+}
