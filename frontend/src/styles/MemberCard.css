@@ -17,6 +17,7 @@
   margin-bottom: 1rem;
 }
 
+/* Member Info */
 .member-info p {
   margin: 0.4rem 0;
   color: var(--muted);
@@ -27,28 +28,31 @@
   color: var(--text);
 }
 
+/* Buttons container */
 .member-card-buttons {
   display: flex;
   gap: 0.5rem;
   margin-top: 1rem;
 }
 
+/* Edit Button */
 .edit-btn {
   flex: 1;
-  background: var(--primary);
+  background: #3b82f6; /* blue */
   border: none;
+  color: #0f172a;
   padding: 0.5rem;
   border-radius: var(--radius);
-  color: #0f172a;
-  font-weight: bold;
   cursor: pointer;
   transition: 0.3s ease;
 }
 
 .edit-btn:hover {
-  background: var(--primary-hover);
+  background: #2563eb; /* darker blue */
+  color: white;
 }
 
+/* Delete Button */
 .delete-btn {
   flex: 1;
   background: transparent;
@@ -65,9 +69,19 @@
   color: white;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .member-card-buttons {
-    flex-direction: column;
-  }
+/* Payment Button */
+.payment-btn {
+  flex: 1;
+  background: #22c55e; /* green */
+  border: none;
+  color: #0f172a;
+  padding: 0.5rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.payment-btn:hover {
+  background: #16a34a; /* darker green */
+  color: white;
 }

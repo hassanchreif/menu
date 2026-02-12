@@ -65,39 +65,30 @@
   color: var(--primary);
 }
 
-/* Search Input */
+/* Search */
 .search-input {
   width: 100%;
-  padding: 0.8rem 1rem; /* same padding as modal inputs */
+  padding: 0.8rem;
   margin-bottom: 2rem;
   border-radius: var(--radius);
   border: 1px solid var(--border);
-  background: var(--card); /* change from #0f172a to match cards */
+  background: #0f172a;
   color: var(--text);
-  font-size: 1rem;
-  box-sizing: border-box; /* ensures consistent width */
-  transition: var(--transition);
-}
-
-.search-input::placeholder {
-  color: var(--muted);
 }
 
 .search-input:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.3); /* subtle focus glow */
 }
 
-
-/* Members List */
+/* Members List Grid */
 .members-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.5rem;
 }
 
-/* Empty State */
+/* Empty */
 .empty-state {
   color: var(--muted);
 }

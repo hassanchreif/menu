@@ -12,9 +12,7 @@ export default function Dashboard({ token }) {
   const [editingMember, setEditingMember] = useState(null);
   const [search, setSearch] = useState("");
 
-  // ========================
-  // Fetch Members
-  // ========================
+  // Fetch members
   const fetchMembers = async () => {
     try {
       const res = await axios.get("http://localhost:5000/api/members", {
@@ -33,9 +31,7 @@ export default function Dashboard({ token }) {
     fetchMembers();
   }, [token]);
 
-  // ========================
   // Search
-  // ========================
   useEffect(() => {
     const filtered = members.filter((m) =>
       m.name.toLowerCase().includes(search.toLowerCase())
@@ -43,15 +39,9 @@ export default function Dashboard({ token }) {
     setFilteredMembers(filtered);
   }, [search, members]);
 
-  // ========================
   // Delete
-  // ========================
   const handleDelete = async (id) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this member?"
-    );
-    if (!confirmDelete) return;
-
+    if (!window.confirm("Are you sure you want to delete this member?")) return;
     try {
       await axios.delete(`http://localhost:5000/api/members/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -62,29 +52,63 @@ export default function Dashboard({ token }) {
     }
   };
 
-  // ========================
   // Edit
-  // ========================
   const handleEdit = (member) => {
     setEditingMember(member);
     setShowModal(true);
   };
 
-  // ========================
-  // Statistics
-  // ========================
+  // Payment
+  const handlePay = async (member) => {
+    const amount = prompt("Enter payment amount:");
+    if (!amount) return;
+    try {
+      await axios.put(
+        `http://localhost:5000/api/members/${member._id}`,
+        {
+          balance: member.balance + parseFloat(amount),
+          subscriptionStart: new Date(),
+          subscriptionEnd: calculateEndDate(member.subscriptionType),
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      fetchMembers();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const calculateEndDate = (type) => {
+    const now = new Date();
+    switch (type) {
+      case "daily":
+        now.setDate(now.getDate() + 1);
+        break;
+      case "monthly":
+        now.setMonth(now.getMonth() + 1);
+        break;
+      case "6months":
+        now.setMonth(now.getMonth() + 6);
+        break;
+      case "yearly":
+        now.setFullYear(now.getFullYear() + 1);
+        break;
+      default:
+        break;
+    }
+    return now;
+  };
+
+  // Stats
   const today = new Date();
   const activeMembers = members.filter(
     (m) => !m.subscriptionEnd || new Date(m.subscriptionEnd) > today
   ).length;
-
   const expiringSoon = members.filter((m) => {
     if (!m.subscriptionEnd) return false;
-    const end = new Date(m.subscriptionEnd);
-    const diffDays = (end - today) / (1000 * 60 * 60 * 24);
+    const diffDays = (new Date(m.subscriptionEnd) - today) / (1000 * 60 * 60 * 24);
     return diffDays <= 7 && diffDays > 0;
   }).length;
-
   const totalRevenue = members.reduce((acc, m) => acc + (m.balance || 0), 0);
 
   return (
@@ -141,6 +165,7 @@ export default function Dashboard({ token }) {
               member={m}
               onEdit={handleEdit}
               onDelete={handleDelete}
+              onPay={handlePay}
             />
           ))}
         </div>

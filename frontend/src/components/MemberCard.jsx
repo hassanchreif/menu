@@ -1,7 +1,7 @@
 import React from "react";
 import "../styles/MemberCard.css";
 
-export default function MemberCard({ member, onEdit, onDelete }) {
+export default function MemberCard({ member, onEdit, onDelete, onPay }) {
   return (
     <div className="member-card">
       <h3>{member.name}</h3>
@@ -26,6 +26,9 @@ export default function MemberCard({ member, onEdit, onDelete }) {
         </button>
         <button className="delete-btn" onClick={() => onDelete(member._id)}>
           Delete
+        </button>
+        <button className="payment-btn" onClick={() => onPay(member)}>
+          Pay
         </button>
       </div>
     </div>

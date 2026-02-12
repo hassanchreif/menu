@@ -5,6 +5,7 @@ const cors = require("cors");
 
 const memberRoutes = require("./routes/memberRoutes");
 const authRoutes = require("./routes/authRoutes"); // new
+const paymentRoutes = require("./routes/paymentRoutes");
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(express.json());
 
 app.use("/api/members", memberRoutes);
 app.use("/api/auth", authRoutes); // connect auth routes
+app.use("/api/payments", paymentRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI)
