@@ -20,3 +20,17 @@ exports.getMembers = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch members" });
   }
 };
+
+exports.deleteMember = async (req, res) => {
+  try {
+    const member = await Member.findByIdAndDelete(req.params.id);
+
+    if (!member) {
+      return res.status(404).json({ message: "Member not found" });
+    }
+
+    res.json({ message: "Member deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete member" });
+  }
+};
