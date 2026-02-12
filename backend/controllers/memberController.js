@@ -34,3 +34,24 @@ exports.deleteMember = async (req, res) => {
     res.status(500).json({ message: "Failed to delete member" });
   }
 };
+
+// Update a member
+exports.updateMember = async (req, res) => {
+  try {
+    const member = await Member.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true } // return the updated document
+    );
+
+    if (!member) {
+      return res.status(404).json({ message: "Member not found" });
+    }
+
+    res.json(member);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to update member", error: error.message });
+  }
+};
+
+

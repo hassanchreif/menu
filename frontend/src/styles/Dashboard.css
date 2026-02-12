@@ -65,79 +65,39 @@
   color: var(--primary);
 }
 
-/* Search */
+/* Search Input */
 .search-input {
   width: 100%;
-  padding: 0.8rem;
+  padding: 0.8rem 1rem; /* same padding as modal inputs */
   margin-bottom: 2rem;
   border-radius: var(--radius);
   border: 1px solid var(--border);
-  background: #0f172a;
+  background: var(--card); /* change from #0f172a to match cards */
   color: var(--text);
+  font-size: 1rem;
+  box-sizing: border-box; /* ensures consistent width */
+  transition: var(--transition);
+}
+
+.search-input::placeholder {
+  color: var(--muted);
 }
 
 .search-input:focus {
   outline: none;
   border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.3); /* subtle focus glow */
 }
 
-/* Grid */
+
+/* Members List */
 .members-list {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 1.5rem;
 }
 
-/* Card */
-.member-card {
-  background: var(--card);
-  padding: 1.5rem;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow);
-  transition: 0.3s ease;
-}
-
-.member-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-}
-
-.member-card h3 {
-  color: var(--primary);
-  margin-bottom: 1rem;
-}
-
-/* Member Info */
-.member-info p {
-  margin: 0.4rem 0;
-  color: var(--muted);
-  font-size: 0.95rem;
-}
-
-.member-info strong {
-  color: var(--text);
-}
-
-/* Delete Button */
-.delete-btn {
-  margin-top: 1rem;
-  width: 100%;
-  background: transparent;
-  border: 1px solid var(--danger);
-  color: var(--danger);
-  padding: 0.5rem;
-  border-radius: var(--radius);
-  cursor: pointer;
-  transition: 0.3s ease;
-}
-
-.delete-btn:hover {
-  background: var(--danger);
-  color: white;
-}
-
-/* Empty */
+/* Empty State */
 .empty-state {
   color: var(--muted);
 }

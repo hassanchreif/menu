@@ -3,15 +3,16 @@ const router = express.Router();
 const {
   createMember,
   getMembers,
+  deleteMember,
+  updateMember, // ✅ make sure to include this
 } = require("../controllers/memberController");
 
 const authMiddleware = require("../middleware/authMiddleware");
-const { deleteMember } = require("../controllers/memberController");
 
 // 🔒 Protected routes
 router.post("/", authMiddleware, createMember);
 router.get("/", authMiddleware, getMembers);
-router.delete("/:id", deleteMember);
-
+router.delete("/:id", authMiddleware, deleteMember);
+router.put("/:id", authMiddleware, updateMember);
 
 module.exports = router;

@@ -1,0 +1,73 @@
+.member-card {
+  background: var(--card);
+  padding: 1.5rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
+  transition: 0.3s ease;
+}
+
+.member-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+}
+
+.member-card h3 {
+  color: var(--primary);
+  margin-bottom: 1rem;
+}
+
+.member-info p {
+  margin: 0.4rem 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.member-info strong {
+  color: var(--text);
+}
+
+.member-card-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.edit-btn {
+  flex: 1;
+  background: var(--primary);
+  border: none;
+  padding: 0.5rem;
+  border-radius: var(--radius);
+  color: #0f172a;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.edit-btn:hover {
+  background: var(--primary-hover);
+}
+
+.delete-btn {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--danger);
+  color: var(--danger);
+  padding: 0.5rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.delete-btn:hover {
+  background: var(--danger);
+  color: white;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .member-card-buttons {
+    flex-direction: column;
+  }
+}

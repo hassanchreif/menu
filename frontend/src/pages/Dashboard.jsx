@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import CreateMemberModal from "../components/CreateMemberModal";
+import MemberCard from "../components/MemberCard";
 import "../styles/Dashboard.css";
 
 export default function Dashboard({ token }) {
@@ -8,6 +9,7 @@ export default function Dashboard({ token }) {
   const [filteredMembers, setFilteredMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
+  const [editingMember, setEditingMember] = useState(null);
   const [search, setSearch] = useState("");
 
   // ========================
@@ -15,13 +17,9 @@ export default function Dashboard({ token }) {
   // ========================
   const fetchMembers = async () => {
     try {
-      const res = await axios.get(
-        "http://localhost:5000/api/members",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
+      const res = await axios.get("http://localhost:5000/api/members", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       setMembers(res.data);
       setFilteredMembers(res.data);
       setLoading(false);
@@ -52,17 +50,12 @@ export default function Dashboard({ token }) {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this member?"
     );
-
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(
-        `http://localhost:5000/api/members/${id}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
+      await axios.delete(`http://localhost:5000/api/members/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       fetchMembers();
     } catch (err) {
       console.error(err);
@@ -70,10 +63,17 @@ export default function Dashboard({ token }) {
   };
 
   // ========================
+  // Edit
+  // ========================
+  const handleEdit = (member) => {
+    setEditingMember(member);
+    setShowModal(true);
+  };
+
+  // ========================
   // Statistics
   // ========================
   const today = new Date();
-
   const activeMembers = members.filter(
     (m) => !m.subscriptionEnd || new Date(m.subscriptionEnd) > today
   ).length;
@@ -85,25 +85,25 @@ export default function Dashboard({ token }) {
     return diffDays <= 7 && diffDays > 0;
   }).length;
 
-  const totalRevenue = members.reduce(
-    (acc, m) => acc + (m.balance || 0),
-    0
-  );
+  const totalRevenue = members.reduce((acc, m) => acc + (m.balance || 0), 0);
 
   return (
     <div className="dashboard">
-      {/* ================= Header ================= */}
+      {/* Header */}
       <div className="dashboard-header">
         <h2>Members</h2>
         <button
           className="add-member-btn"
-          onClick={() => setShowModal(true)}
+          onClick={() => {
+            setEditingMember(null);
+            setShowModal(true);
+          }}
         >
           + Add Member
         </button>
       </div>
 
-      {/* ================= Stats ================= */}
+      {/* Stats */}
       <div className="stats-grid">
         <div className="stat-card">
           <h3>Active</h3>
@@ -119,7 +119,7 @@ export default function Dashboard({ token }) {
         </div>
       </div>
 
-      {/* ================= Search ================= */}
+      {/* Search */}
       <input
         type="text"
         placeholder="Search member by name..."
@@ -128,7 +128,7 @@ export default function Dashboard({ token }) {
         onChange={(e) => setSearch(e.target.value)}
       />
 
-      {/* ================= Members List ================= */}
+      {/* Members List */}
       {loading ? (
         <p>Loading...</p>
       ) : filteredMembers.length === 0 ? (
@@ -136,46 +136,26 @@ export default function Dashboard({ token }) {
       ) : (
         <div className="members-list">
           {filteredMembers.map((m) => (
-            <div key={m._id} className="member-card">
-              <h3>{m.name}</h3>
-
-              <div className="member-info">
-                {m.email && (
-                  <p><strong>Email:</strong> {m.email}</p>
-                )}
-                {m.phone && (
-                  <p><strong>Phone:</strong> {m.phone}</p>
-                )}
-                <p><strong>Gender:</strong> {m.gender}</p>
-                <p><strong>Subscription:</strong> {m.subscriptionType}</p>
-
-                {m.subscriptionEnd && (
-                  <p>
-                    <strong>Ends:</strong>{" "}
-                    {new Date(m.subscriptionEnd).toLocaleDateString()}
-                  </p>
-                )}
-
-                <p><strong>Balance:</strong> ${m.balance}</p>
-              </div>
-
-              <button
-                className="delete-btn"
-                onClick={() => handleDelete(m._id)}
-              >
-                Delete
-              </button>
-            </div>
+            <MemberCard
+              key={m._id}
+              member={m}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
           ))}
         </div>
       )}
 
-      {/* ================= Modal ================= */}
+      {/* Modal */}
       {showModal && (
         <CreateMemberModal
           token={token}
-          onClose={() => setShowModal(false)}
+          onClose={() => {
+            setShowModal(false);
+            setEditingMember(null);
+          }}
           onMemberCreated={fetchMembers}
+          member={editingMember}
         />
       )}
     </div>
