@@ -31,7 +31,7 @@ export default function Dashboard({ token }) {
     fetchMembers();
   }, [token]);
 
-  // Search
+  // Search members
   useEffect(() => {
     const filtered = members.filter((m) =>
       m.name.toLowerCase().includes(search.toLowerCase())
@@ -39,7 +39,7 @@ export default function Dashboard({ token }) {
     setFilteredMembers(filtered);
   }, [search, members]);
 
-  // Delete
+  // Delete member
   const handleDelete = async (id) => {
     if (!window.confirm("Are you sure you want to delete this member?")) return;
     try {
@@ -52,51 +52,25 @@ export default function Dashboard({ token }) {
     }
   };
 
-  // Edit
+  // Edit member
   const handleEdit = (member) => {
     setEditingMember(member);
     setShowModal(true);
   };
 
-  // Payment
-  const handlePay = async (member) => {
-    const amount = prompt("Enter payment amount:");
-    if (!amount) return;
+  // Extend subscription (called from MemberCard)
+  const handleExtend = async (memberId, newType) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/members/${member._id}`,
-        {
-          balance: member.balance + parseFloat(amount),
-          subscriptionStart: new Date(),
-          subscriptionEnd: calculateEndDate(member.subscriptionType),
-        },
+        `http://localhost:5000/api/members/${memberId}/extend`,
+        { subscriptionType: newType },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       fetchMembers();
     } catch (err) {
       console.error(err);
+      alert("Failed to extend subscription");
     }
-  };
-
-  const calculateEndDate = (type) => {
-    const now = new Date();
-    switch (type) {
-      case "daily":
-        now.setDate(now.getDate() + 1);
-        break;
-      case "monthly":
-        now.setMonth(now.getMonth() + 1);
-        break;
-      case "6months":
-        now.setMonth(now.getMonth() + 6);
-        break;
-      case "yearly":
-        now.setFullYear(now.getFullYear() + 1);
-        break;
-      default:
-        break;
-    }
-    return now;
   };
 
   // Stats
@@ -109,7 +83,6 @@ export default function Dashboard({ token }) {
     const diffDays = (new Date(m.subscriptionEnd) - today) / (1000 * 60 * 60 * 24);
     return diffDays <= 7 && diffDays > 0;
   }).length;
-  const totalRevenue = members.reduce((acc, m) => acc + (m.balance || 0), 0);
 
   return (
     <div className="dashboard">
@@ -137,10 +110,6 @@ export default function Dashboard({ token }) {
           <h3>Expiring Soon</h3>
           <p>{expiringSoon}</p>
         </div>
-        <div className="stat-card">
-          <h3>Total Revenue</h3>
-          <p>${totalRevenue}</p>
-        </div>
       </div>
 
       {/* Search */}
@@ -163,9 +132,10 @@ export default function Dashboard({ token }) {
             <MemberCard
               key={m._id}
               member={m}
+              token={token}
               onEdit={handleEdit}
               onDelete={handleDelete}
-              onPay={handlePay}
+              onSubscriptionExtended={() => fetchMembers()}
             />
           ))}
         </div>

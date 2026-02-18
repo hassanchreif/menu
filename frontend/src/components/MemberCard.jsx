@@ -1,9 +1,29 @@
 import React from "react";
+import axios from "axios";
 import "../styles/MemberCard.css";
 
-export default function MemberCard({ member, onEdit, onDelete, onPay }) {
+export default function MemberCard({ member, token, onEdit, onDelete, onSubscriptionExtended }) {
+  const isExpired = member.subscriptionEnd && new Date(member.subscriptionEnd) < new Date();
+
+  const handleExtend = async () => {
+    const newType = prompt("Enter new subscription type: daily, monthly, 6months, yearly");
+    if (!newType) return;
+
+    try {
+      await axios.put(
+        `http://localhost:5000/api/members/${member._id}/extend`,
+        { subscriptionType: newType },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      onSubscriptionExtended(); // refresh list
+    } catch (err) {
+      console.error(err);
+      alert("Failed to extend subscription");
+    }
+  };
+
   return (
-    <div className="member-card">
+    <div className={`member-card ${isExpired ? "expired" : ""}`}>
       <h3>{member.name}</h3>
 
       <div className="member-info">
@@ -17,19 +37,12 @@ export default function MemberCard({ member, onEdit, onDelete, onPay }) {
             {new Date(member.subscriptionEnd).toLocaleDateString()}
           </p>
         )}
-        <p><strong>Balance:</strong> ${member.balance}</p>
       </div>
 
       <div className="member-card-buttons">
-        <button className="edit-btn" onClick={() => onEdit(member)}>
-          Edit
-        </button>
-        <button className="delete-btn" onClick={() => onDelete(member._id)}>
-          Delete
-        </button>
-        <button className="payment-btn" onClick={() => onPay(member)}>
-          Pay
-        </button>
+        <button className="edit-btn" onClick={() => onEdit(member)}>Edit</button>
+        <button className="delete-btn" onClick={() => onDelete(member._id)}>Delete</button>
+        {isExpired && <button className="extend-btn" onClick={handleExtend}>Extend</button>}
       </div>
     </div>
   );

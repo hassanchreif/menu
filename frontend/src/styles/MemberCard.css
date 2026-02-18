@@ -85,3 +85,24 @@
   background: #16a34a; /* darker green */
   color: white;
 }
+
+.member-card.expired {
+  border: 2px solid #ef4444;
+  box-shadow: 0 0 15px #ef4444;
+}
+
+.extend-btn {
+  flex: 1;
+  background: #ef4444;
+  border: none;
+  color: #0f172a;
+  padding: 0.5rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.extend-btn:hover {
+  background: #dc2626;
+  color: white;
+}

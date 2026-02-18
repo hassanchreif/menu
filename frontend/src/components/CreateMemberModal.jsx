@@ -9,12 +9,10 @@ export default function CreateMemberModal({ token, onClose, onMemberCreated, mem
     phone: "",
     gender: "male",
     subscriptionType: "monthly",
-    balance: 0,
   });
 
   const [error, setError] = useState("");
 
-  // Populate form if editing
   useEffect(() => {
     if (member) {
       setForm({
@@ -23,7 +21,6 @@ export default function CreateMemberModal({ token, onClose, onMemberCreated, mem
         phone: member.phone || "",
         gender: member.gender || "male",
         subscriptionType: member.subscriptionType || "monthly",
-        balance: member.balance || 0,
       });
     }
   }, [member]);
@@ -38,14 +35,12 @@ export default function CreateMemberModal({ token, onClose, onMemberCreated, mem
 
     try {
       if (member) {
-        // Update existing member
         await axios.put(
           `http://localhost:5000/api/members/${member._id}`,
           form,
           { headers: { Authorization: `Bearer ${token}` } }
         );
       } else {
-        // Create new member
         await axios.post(
           "http://localhost:5000/api/members",
           form,
@@ -102,13 +97,6 @@ export default function CreateMemberModal({ token, onClose, onMemberCreated, mem
             <option value="6months">6 Months</option>
             <option value="yearly">Yearly</option>
           </select>
-          <input
-            type="number"
-            name="balance"
-            placeholder="Balance"
-            value={form.balance}
-            onChange={handleChange}
-          />
 
           <div className="modal-buttons">
             <button type="submit" className="create-btn">
