@@ -14,6 +14,10 @@ const memberSchema = new mongoose.Schema(
     },
     subscriptionStart: { type: Date, default: Date.now },
     subscriptionEnd: Date,
+    image: {
+  type: String,
+  default: "",
+},
   },
   { timestamps: true }
 );

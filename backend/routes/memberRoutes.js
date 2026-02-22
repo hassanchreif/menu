@@ -8,10 +8,16 @@ const {
   extendSubscription, // ✅ added missing export
 } = require("../controllers/memberController");
 
+const upload = require("../middleware/uploadMiddleware");
 const authMiddleware = require("../middleware/authMiddleware");
 
 // 🔒 Protected routes
-router.post("/", authMiddleware, createMember);
+router.post(
+  "/",
+  authMiddleware,
+  upload.single("image"),
+  createMember
+);
 router.get("/", authMiddleware, getMembers);
 router.delete("/:id", authMiddleware, deleteMember);
 router.put("/:id", authMiddleware, updateMember);
