@@ -69,15 +69,31 @@ exports.getMembers = async (req, res) => {
 // =======================
 // DELETE MEMBER
 // =======================
+const fs = require("fs");
+const path = require("path");
+
 exports.deleteMember = async (req, res) => {
   try {
-    const member = await Member.findByIdAndDelete(req.params.id);
+    const member = await Member.findById(req.params.id);
+
     if (!member)
       return res.status(404).json({ message: "Member not found" });
 
-    res.json({ message: "Member deleted successfully" });
+    // Delete image file if exists
+    if (member.image) {
+      const imagePath = path.join(__dirname, "..", member.image);
+
+      if (fs.existsSync(imagePath)) {
+        fs.unlinkSync(imagePath);
+      }
+    }
+
+    await Member.findByIdAndDelete(req.params.id);
+
+    res.json({ message: "Member and image deleted successfully" });
 
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Failed to delete member" });
   }
 };
