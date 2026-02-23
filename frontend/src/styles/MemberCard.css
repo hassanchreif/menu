@@ -35,6 +35,81 @@
   margin-top: 1rem;
 }
 
+/* Responsive - Mobile */
+@media (max-width: 480px) {
+  .member-card {
+    padding: 1rem;
+  }
+
+  .member-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .member-info p {
+    font-size: 0.85rem;
+    margin: 0.3rem 0;
+  }
+
+  .member-card-buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .edit-btn,
+  .delete-btn,
+  .payment-btn,
+  .extend-btn {
+    padding: 0.6rem;
+    font-size: 0.85rem;
+  }
+
+  .member-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  .member-image-placeholder {
+    width: 80px;
+    height: 80px;
+    font-size: 12px;
+  }
+}
+
+/* Responsive - Small Mobile */
+@media (max-width: 320px) {
+  .member-card {
+    padding: 0.75rem;
+  }
+
+  .member-card h3 {
+    font-size: 1rem;
+  }
+
+  .member-info p {
+    font-size: 0.8rem;
+  }
+
+  .edit-btn,
+  .delete-btn,
+  .payment-btn,
+  .extend-btn {
+    padding: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .member-image {
+    width: 60px;
+    height: 60px;
+  }
+
+  .member-image-placeholder {
+    width: 60px;
+    height: 60px;
+    font-size: 10px;
+  }
+}
+
 /* Edit Button */
 .edit-btn {
   flex: 1;

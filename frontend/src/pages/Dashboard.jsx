@@ -113,13 +113,15 @@ export default function Dashboard({ token }) {
       </div>
 
       {/* Search */}
-      <input
-        type="text"
-        placeholder="Search member by name..."
-        className="search-input"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+      <div className="search-container">
+        <input
+          type="text"
+          placeholder="Search member by name..."
+          className="search-input"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
 
       {/* Members List */}
       {loading ? (
