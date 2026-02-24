@@ -35,6 +35,7 @@
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   color: var(--text);
   animation: dashboardFade 0.5s ease-out;
+  box-sizing: border-box;
 }
 
 @keyframes dashboardFade {
@@ -274,12 +275,15 @@
 .search-container {
   margin-bottom: 2.5rem;
   width: 100%;
+  max-width: 100%;
   animation: slideUp 0.7s ease-out;
   position: relative;
+  box-sizing: border-box;
 }
 
 .search-input {
   width: 100%;
+  max-width: 100%;
   padding: 1rem 1.5rem;
   padding-left: 3rem;
   border-radius: 50px;
@@ -289,6 +293,7 @@
   font-size: 1rem;
   transition: var(--transition);
   box-shadow: var(--shadow-sm);
+  box-sizing: border-box;
 }
 
 .search-input::placeholder {
