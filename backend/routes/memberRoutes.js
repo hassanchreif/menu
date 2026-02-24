@@ -20,7 +20,7 @@ router.post(
 );
 router.get("/", authMiddleware, getMembers);
 router.delete("/:id", authMiddleware, deleteMember);
-router.put("/:id", authMiddleware, updateMember);
+router.put("/:id", authMiddleware, upload.single("image"), updateMember);
 router.put("/:id/extend", authMiddleware, extendSubscription); // ✅ added missing route
 
 module.exports = router;
