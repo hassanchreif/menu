@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "../styles/MemberCard.css";
+import userImage from "../images/user.png";
 
 export default function MemberCard({
   member,
@@ -10,6 +11,7 @@ export default function MemberCard({
   onSubscriptionExtended,
 }) {
   const [showExtendDropdown, setShowExtendDropdown] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const isExpired =
     member.subscriptionEnd &&
@@ -40,14 +42,17 @@ export default function MemberCard({
       <div className="member-image-container">
         {member.image ? (
           <img
-            src={`http://localhost:5000/${member.image}`}
+            src={imageError ? userImage : `http://localhost:5000/${member.image}`}
+            alt={member.name}
+            className="member-image"
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <img
+            src={userImage}
             alt={member.name}
             className="member-image"
           />
-        ) : (
-          <div className="member-image-placeholder">
-            No Image
-          </div>
         )}
       </div>
 
