@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import "../styles/MemberCard.css";
 
@@ -9,14 +9,13 @@ export default function MemberCard({
   onDelete,
   onSubscriptionExtended,
 }) {
+  const [showExtendDropdown, setShowExtendDropdown] = useState(false);
+
   const isExpired =
     member.subscriptionEnd &&
     new Date(member.subscriptionEnd) < new Date();
 
-  const handleExtend = async () => {
-    const newType = prompt(
-      "Enter new subscription type: daily, monthly, 6months, yearly"
-    );
+  const handleExtend = async (newType) => {
     if (!newType) return;
 
     try {
@@ -26,6 +25,7 @@ export default function MemberCard({
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
+      setShowExtendDropdown(false);
       onSubscriptionExtended();
     } catch (err) {
       console.error(err);
@@ -98,12 +98,28 @@ export default function MemberCard({
         </button>
 
         {isExpired && (
-          <button
-            className="extend-btn"
-            onClick={handleExtend}
-          >
-            Extend
-          </button>
+          <div className="extend-container">
+            <button
+              className="extend-btn"
+              onClick={() => setShowExtendDropdown(!showExtendDropdown)}
+            >
+              Extend
+            </button>
+            
+            {showExtendDropdown && (
+              <select
+                className="extend-dropdown"
+                onChange={(e) => handleExtend(e.target.value)}
+                defaultValue=""
+              >
+                <option value="" disabled>Select Plan</option>
+                <option value="daily">Daily</option>
+                <option value="monthly">Monthly</option>
+                <option value="6months">6 Months</option>
+                <option value="yearly">Yearly</option>
+              </select>
+            )}
+          </div>
         )}
       </div>
     </div>

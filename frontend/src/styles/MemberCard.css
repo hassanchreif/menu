@@ -224,6 +224,46 @@
   color: white;
   border: 1px solid var(--danger, #ef4444);
   animation: extendPulse 2s infinite;
+  position: relative;
+}
+
+/* Extend Container - holds button and dropdown */
+.extend-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1;
+  position: relative;
+}
+
+/* Extend Dropdown */
+.extend-dropdown {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--primary, #22d3ee);
+  border-radius: var(--radius-sm, 6px);
+  background: var(--bg-dark, #0a0f1a);
+  color: var(--text, #f8fafc);
+  font-size: var(--text-sm, 0.875rem);
+  font-weight: var(--font-medium, 500);
+  cursor: pointer;
+  transition: var(--transition, 0.3s ease);
+  width: 100%;
+  outline: none;
+}
+
+.extend-dropdown:hover {
+  border-color: var(--primary-light, #7dd3fc);
+}
+
+.extend-dropdown:focus {
+  border-color: var(--primary, #22d3ee);
+  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.2);
+}
+
+.extend-dropdown option {
+  background: var(--bg-dark, #0a0f1a);
+  color: var(--text, #f8fafc);
+  padding: 0.5rem;
 }
 
 @keyframes extendPulse {
