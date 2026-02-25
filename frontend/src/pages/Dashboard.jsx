@@ -12,7 +12,7 @@ export default function Dashboard({ token }) {
   const [editingMember, setEditingMember] = useState(null);
   const [search, setSearch] = useState("");
 
-  // Fetch members
+  
   const fetchMembers = async () => {
     try {
       const res = await axios.get("http://localhost:5000/api/members", {
