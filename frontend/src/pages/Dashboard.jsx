@@ -11,6 +11,9 @@ export default function Dashboard({ token }) {
   const [showModal, setShowModal] = useState(false);
   const [editingMember, setEditingMember] = useState(null);
   const [search, setSearch] = useState("");
+  const [subscriptionFilter, setSubscriptionFilter] = useState("");
+  const [genderFilter, setGenderFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
 
   
   const fetchMembers = async () => {
@@ -31,13 +34,30 @@ export default function Dashboard({ token }) {
     fetchMembers();
   }, [token]);
 
-  // Search members
+  // Search and filter members
   useEffect(() => {
-    const filtered = members.filter((m) =>
-      m.name.toLowerCase().includes(search.toLowerCase())
-    );
+    const today = new Date();
+    const filtered = members.filter((m) => {
+      // Search by name
+      const matchesSearch = m.name.toLowerCase().includes(search.toLowerCase());
+      
+      // Filter by subscription type
+      const matchesSubscription = subscriptionFilter === "" || m.subscriptionType === subscriptionFilter;
+      
+      // Filter by gender
+      const matchesGender = genderFilter === "" || m.gender === genderFilter;
+      
+      // Filter by status (active/expired)
+      const isExpired = m.subscriptionEnd && new Date(m.subscriptionEnd) < today;
+      const isActive = !isExpired;
+      const matchesStatus = statusFilter === "" || 
+        (statusFilter === "active" && isActive) || 
+        (statusFilter === "expired" && isExpired);
+      
+      return matchesSearch && matchesSubscription && matchesGender && matchesStatus;
+    });
     setFilteredMembers(filtered);
-  }, [search, members]);
+  }, [search, subscriptionFilter, genderFilter, statusFilter, members]);
 
   // Delete member
   const handleDelete = async (id) => {
@@ -112,7 +132,7 @@ export default function Dashboard({ token }) {
         </div>
       </div>
 
-      {/* Search */}
+      {/* Search & Filters */}
       <div className="search-container">
         <input
           type="text"
@@ -121,6 +141,40 @@ export default function Dashboard({ token }) {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
+        
+        <div className="filters-row">
+          <select
+            className="filter-select"
+            value={subscriptionFilter}
+            onChange={(e) => setSubscriptionFilter(e.target.value)}
+          >
+            <option value="">All Plans</option>
+            <option value="daily">Daily</option>
+            <option value="monthly">Monthly</option>
+            <option value="6months">6 Months</option>
+            <option value="yearly">Yearly</option>
+          </select>
+          
+          <select
+            className="filter-select"
+            value={genderFilter}
+            onChange={(e) => setGenderFilter(e.target.value)}
+          >
+            <option value="">All Genders</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+          
+          <select
+            className="filter-select"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
+            <option value="">All Status</option>
+            <option value="active">Active</option>
+            <option value="expired">Expired</option>
+          </select>
+        </div>
       </div>
 
       {/* Members List */}
