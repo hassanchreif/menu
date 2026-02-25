@@ -39,7 +39,7 @@ exports.createMember = async (req, res) => {
       subscriptionType,
       subscriptionStart: now,
       subscriptionEnd: end,
-      image: req.file ? req.file.path.replace(/\\/g, "/") : "",
+      image: req.file ? req.file.path.replace(/\\/g, "/") : "uploads/members/default.png",
     });
 
     await newMember.save();
