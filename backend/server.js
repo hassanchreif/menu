@@ -4,7 +4,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const memberRoutes = require("./routes/memberRoutes");
-const authRoutes = require("./routes/authRoutes"); // auth routes
+const authRoutes = require("./routes/authRoutes");
+const dishRoutes = require("./routes/dishRoutes");
 
 const app = express();
 
@@ -15,7 +16,8 @@ app.use("/uploads", express.static("uploads"));
 
 // Routes
 app.use("/api/members", memberRoutes);
-app.use("/api/auth", authRoutes); // connect auth routes
+app.use("/api/auth", authRoutes);
+app.use("/api/dishes", dishRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI)
@@ -26,3 +28,4 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () =>
   console.log(`Server running on port ${PORT}`)
 );
+

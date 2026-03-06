@@ -1,214 +1,113 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-import CreateMemberModal from "../components/CreateMemberModal";
-import MemberCard from "../components/MemberCard";
+import { Link, useNavigate } from "react-router-dom";
+import { getAllDishes, deleteDish } from "../services/dishService";
 import "../styles/Dashboard.css";
 
-export default function Dashboard({ token }) {
-  const [members, setMembers] = useState([]);
-  const [filteredMembers, setFilteredMembers] = useState([]);
+export default function Dashboard() {
+  const [dishes, setDishes] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showModal, setShowModal] = useState(false);
-  const [editingMember, setEditingMember] = useState(null);
-  const [search, setSearch] = useState("");
-  const [subscriptionFilter, setSubscriptionFilter] = useState("");
-  const [genderFilter, setGenderFilter] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
+  const navigate = useNavigate();
 
-  
-  const fetchMembers = async () => {
+  const fetchDishes = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/members", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setMembers(res.data);
-      setFilteredMembers(res.data);
+      const data = await getAllDishes();
+      setDishes(data);
       setLoading(false);
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error("Error fetching dishes:", error);
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchMembers();
-  }, [token]);
+    fetchDishes();
+  }, []);
 
-  // Search and filter members
-  useEffect(() => {
-    const today = new Date();
-    const filtered = members.filter((m) => {
-      // Search by name
-      const matchesSearch = m.name.toLowerCase().includes(search.toLowerCase());
-      
-      // Filter by subscription type
-      const matchesSubscription = subscriptionFilter === "" || m.subscriptionType === subscriptionFilter;
-      
-      // Filter by gender
-      const matchesGender = genderFilter === "" || m.gender === genderFilter;
-      
-      // Filter by status (active/expired)
-      const isExpired = m.subscriptionEnd && new Date(m.subscriptionEnd) < today;
-      const isActive = !isExpired;
-      const matchesStatus = statusFilter === "" || 
-        (statusFilter === "active" && isActive) || 
-        (statusFilter === "expired" && isExpired);
-      
-      return matchesSearch && matchesSubscription && matchesGender && matchesStatus;
-    });
-    setFilteredMembers(filtered);
-  }, [search, subscriptionFilter, genderFilter, statusFilter, members]);
-
-  // Delete member
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this member?")) return;
+    if (!window.confirm("Are you sure you want to delete this dish?")) return;
     try {
-      await axios.delete(`http://localhost:5000/api/members/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      fetchMembers();
-    } catch (err) {
-      console.error(err);
+      await deleteDish(id);
+      fetchDishes();
+    } catch (error) {
+      console.error("Error deleting dish:", error);
     }
   };
 
-  // Edit member
-  const handleEdit = (member) => {
-    setEditingMember(member);
-    setShowModal(true);
+  const handleEdit = (id) => {
+    navigate(`/edit-dish/${id}`);
   };
-
-  // Extend subscription (called from MemberCard)
-  const handleExtend = async (memberId, newType) => {
-    try {
-      await axios.put(
-        `http://localhost:5000/api/members/${memberId}/extend`,
-        { subscriptionType: newType },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      fetchMembers();
-    } catch (err) {
-      console.error(err);
-      alert("Failed to extend subscription");
-    }
-  };
-
-  // Stats
-  const today = new Date();
-  const activeMembers = members.filter(
-    (m) => !m.subscriptionEnd || new Date(m.subscriptionEnd) > today
-  ).length;
-  const expiringSoon = members.filter((m) => {
-    if (!m.subscriptionEnd) return false;
-    const diffDays = (new Date(m.subscriptionEnd) - today) / (1000 * 60 * 60 * 24);
-    return diffDays <= 7 && diffDays > 0;
-  }).length;
 
   return (
     <div className="dashboard">
-      {/* Header */}
       <div className="dashboard-header">
-        <h2>Members</h2>
-        <button
-          className="add-member-btn"
-          onClick={() => {
-            setEditingMember(null);
-            setShowModal(true);
-          }}
-        >
-          + Add Member
-        </button>
+        <h2>Dashboard</h2>
+        <Link to="/add-dish" className="add-dish-btn">
+          + Add Dish
+        </Link>
       </div>
 
       {/* Stats */}
       <div className="stats-grid">
         <div className="stat-card">
-          <h3>Active</h3>
-          <p>{activeMembers}</p>
-        </div>
-        <div className="stat-card">
-          <h3>Expiring Soon</h3>
-          <p>{expiringSoon}</p>
+          <h3>Total Dishes</h3>
+          <p className="stat-number">{dishes.length}</p>
         </div>
       </div>
 
-      {/* Search & Filters */}
-      <div className="search-container">
-        <input
-          type="text"
-          placeholder="Search member by name..."
-          className="search-input"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        
-        <div className="filters-row">
-          <select
-            className="filter-select"
-            value={subscriptionFilter}
-            onChange={(e) => setSubscriptionFilter(e.target.value)}
-          >
-            <option value="">All Plans</option>
-            <option value="daily">Daily</option>
-            <option value="monthly">Monthly</option>
-            <option value="6months">6 Months</option>
-            <option value="yearly">Yearly</option>
-          </select>
-          
-          <select
-            className="filter-select"
-            value={genderFilter}
-            onChange={(e) => setGenderFilter(e.target.value)}
-          >
-            <option value="">All Genders</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-          </select>
-          
-          <select
-            className="filter-select"
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-          >
-            <option value="">All Status</option>
-            <option value="active">Active</option>
-            <option value="expired">Expired</option>
-          </select>
-        </div>
+      {/* Actions */}
+      <div className="dashboard-actions">
+        <Link to="/add-dish" className="action-btn">
+          Add Dish
+        </Link>
+        <Link to="/menu" className="action-btn">
+          Manage Menu
+        </Link>
       </div>
 
-      {/* Members List */}
-      {loading ? (
-        <p>Loading...</p>
-      ) : filteredMembers.length === 0 ? (
-        <p className="empty-state">No members found.</p>
-      ) : (
-        <div className="members-list">
-          {filteredMembers.map((m) => (
-            <MemberCard
-              key={m._id}
-              member={m}
-              token={token}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
-              onSubscriptionExtended={() => fetchMembers()}
-            />
-          ))}
-        </div>
-      )}
-
-      {/* Modal */}
-      {showModal && (
-        <CreateMemberModal
-          token={token}
-          onClose={() => {
-            setShowModal(false);
-            setEditingMember(null);
-          }}
-          onMemberCreated={fetchMembers}
-          member={editingMember}
-        />
-      )}
+      {/* Dishes Table */}
+      <div className="dishes-table-container">
+        <h3>All Dishes</h3>
+        {loading ? (
+          <p>Loading...</p>
+        ) : dishes.length === 0 ? (
+          <p className="empty-message">No dishes yet. Add your first dish!</p>
+        ) : (
+          <table className="dishes-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {dishes.map((dish) => (
+                <tr key={dish._id}>
+                  <td>{dish.name}</td>
+                  <td>{dish.category}</td>
+                  <td>${dish.price}</td>
+                  <td className="actions-cell">
+                    <button
+                      className="edit-btn"
+                      onClick={() => handleEdit(dish._id)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(dish._id)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+      </div>
     </div>
   );
 }
+

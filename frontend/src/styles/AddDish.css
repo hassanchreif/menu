@@ -1,0 +1,12 @@
+.add-dish-page {
+  padding: 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.add-dish-page h2 {
+  text-align: center;
+  color: #1a472a;
+  margin-bottom: 2rem;
+}
+
