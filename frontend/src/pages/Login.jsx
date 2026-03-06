@@ -30,7 +30,7 @@ export default function Login({ setToken }) {
   return (
     <div className="login-container">
       <div className="login-card">
-        <h2>Admin </h2>
+        <h2>Admin Login</h2>
         <form onSubmit={handleLogin}>
           <input
             type="email"
