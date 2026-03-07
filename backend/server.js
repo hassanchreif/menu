@@ -3,7 +3,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 
-const memberRoutes = require("./routes/memberRoutes");
 const authRoutes = require("./routes/authRoutes");
 const dishRoutes = require("./routes/dishRoutes");
 
@@ -15,7 +14,6 @@ app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 
 // Routes
-app.use("/api/members", memberRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/dishes", dishRoutes);
 

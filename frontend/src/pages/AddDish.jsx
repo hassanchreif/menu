@@ -15,7 +15,9 @@ export default function AddDish() {
       navigate("/dashboard");
     } catch (error) {
       console.error("Error creating dish:", error);
-      alert("Failed to create dish");
+      // Show the specific error message from the backend
+      const errorMessage = error.response?.data?.message || "Failed to create dish";
+      alert(errorMessage);
     } finally {
       setLoading(false);
     }

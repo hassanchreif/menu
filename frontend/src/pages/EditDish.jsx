@@ -34,7 +34,9 @@ export default function EditDish() {
       navigate("/dashboard");
     } catch (error) {
       console.error("Error updating dish:", error);
-      alert("Failed to update dish");
+      // Show the specific error message from the backend
+      const errorMessage = error.response?.data?.message || "Failed to update dish";
+      alert(errorMessage);
     } finally {
       setSubmitting(false);
     }
