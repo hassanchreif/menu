@@ -6,75 +6,75 @@ import "../styles/Dashboard.css";
 export default function Dashboard() {
   const [dishes, setDishes] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const fetchDishes = async () => {
+    setLoading(true);
+    setError("");
     try {
       const data = await getAllDishes();
       setDishes(data);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching dishes:", error);
+    } catch (err) {
+      setError("Failed to load dishes. Please try again.");
+    } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    fetchDishes();
-  }, []);
+  useEffect(() => { fetchDishes(); }, []);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async id => {
     if (!window.confirm("Are you sure you want to delete this dish?")) return;
-    try {
-      await deleteDish(id);
-      fetchDishes();
-    } catch (error) {
-      console.error("Error deleting dish:", error);
+    try { 
+      await deleteDish(id); 
+      fetchDishes(); 
+    } catch (err) { 
+      alert("Failed to delete dish"); 
     }
   };
 
-  const handleEdit = (id) => {
-    navigate(`/edit-dish/${id}`);
-  };
+  const totalDishes = dishes.length;
+  const categories = [...new Set(dishes.map(d => d.category))];
 
   return (
     <div className="dashboard">
       <div className="dashboard-header">
         <h2>Dashboard</h2>
-        <Link to="/add-dish" className="add-dish-btn">
-          + Add Dish
-        </Link>
+        <Link to="/add-dish" className="add-dish-btn">+ Add Dish</Link>
       </div>
 
-      {/* Stats */}
+      {error && <div className="error-banner">{error}</div>}
+
       <div className="stats-grid">
         <div className="stat-card">
           <h3>Total Dishes</h3>
-          <p className="stat-number">{dishes.length}</p>
+          <span className="stat-number">{totalDishes}</span>
+        </div>
+        <div className="stat-card">
+          <h3>Categories</h3>
+          <span className="stat-number">{categories.length}</span>
         </div>
       </div>
 
-      {/* Actions */}
-      <div className="dashboard-actions">
-        <Link to="/add-dish" className="action-btn">
-          Add Dish
-        </Link>
-        <Link to="/menu" className="action-btn">
-          Manage Menu
-        </Link>
-      </div>
-
-      {/* Dishes Table */}
       <div className="dishes-table-container">
         <h3>All Dishes</h3>
+        
         {loading ? (
-          <p>Loading...</p>
+          <div className="loading-container">
+            <div className="spinner"></div>
+            <p>Loading dishes...</p>
+          </div>
         ) : dishes.length === 0 ? (
-          <p className="empty-message">No dishes yet. Add your first dish!</p>
+          <div className="empty-state">
+            <p>No dishes yet. Add your first dish to get started!</p>
+            <Link to="/add-dish" className="add-dish-btn">Add Dish</Link>
+          </div>
         ) : (
           <table className="dishes-table">
             <thead>
               <tr>
+                <th>Image</th>
                 <th>Name</th>
                 <th>Category</th>
                 <th>Price</th>
@@ -82,24 +82,17 @@ export default function Dashboard() {
               </tr>
             </thead>
             <tbody>
-              {dishes.map((dish) => (
-                <tr key={dish._id}>
-                  <td>{dish.name}</td>
-                  <td>{dish.category}</td>
-                  <td>${dish.price}</td>
+              {dishes.map(d => (
+                <tr key={d._id}>
+                  <td>
+                    <img src={d.image} alt={d.name} className="table-dish-image" />
+                  </td>
+                  <td>{d.name}</td>
+                  <td><span className="category-badge">{d.category}</span></td>
+                  <td>${d.price?.toFixed(2) || "0.00"}</td>
                   <td className="actions-cell">
-                    <button
-                      className="edit-btn"
-                      onClick={() => handleEdit(dish._id)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="delete-btn"
-                      onClick={() => handleDelete(dish._id)}
-                    >
-                      Delete
-                    </button>
+                    <button className="edit-btn" onClick={() => navigate(`/edit-dish/${d._id}`)}>Edit</button>
+                    <button className="delete-btn" onClick={() => handleDelete(d._id)}>Delete</button>
                   </td>
                 </tr>
               ))}
@@ -110,4 +103,3 @@ export default function Dashboard() {
     </div>
   );
 }
-

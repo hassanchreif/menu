@@ -6,14 +6,20 @@ import "../styles/Home.css";
 
 export default function Home() {
   const [featuredDishes, setFeaturedDishes] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchDishes = async () => {
+      setLoading(true);
+      setError("");
       try {
         const dishes = await getAllDishes();
         setFeaturedDishes(dishes.slice(0, 3));
-      } catch (error) {
-        console.error("Error fetching dishes:", error);
+      } catch (err) {
+        setError("Unable to load featured dishes. Please try again later.");
+      } finally {
+        setLoading(false);
       }
     };
     fetchDishes();
@@ -35,16 +41,33 @@ export default function Home() {
       {/* Featured Dishes */}
       <section className="featured-section">
         <h2>Featured Dishes</h2>
-        <div className="featured-grid">
-          {featuredDishes.map((dish) => (
-            <DishCard key={dish._id} dish={dish} isOwner={false} />
-          ))}
-        </div>
-        <div className="featured-cta">
-          <Link to="/menu" className="view-all-btn">
-            View All Dishes
-          </Link>
-        </div>
+        
+        {loading ? (
+          <div className="loading-container">
+            <div className="spinner"></div>
+            <p>Loading featured dishes...</p>
+          </div>
+        ) : error ? (
+          <div className="error-container">
+            <p>{error}</p>
+          </div>
+        ) : featuredDishes.length === 0 ? (
+          <div className="empty-state">
+            <p>No dishes available yet. Check back soon!</p>
+            <Link to="/menu" className="view-all-btn">Browse Menu</Link>
+          </div>
+        ) : (
+          <>
+            <div className="featured-grid">
+              {featuredDishes.map(dish => (
+                <DishCard key={dish._id} dish={dish} isOwner={false} />
+              ))}
+            </div>
+            <div className="featured-cta">
+              <Link to="/menu" className="view-all-btn">View All Dishes</Link>
+            </div>
+          </>
+        )}
       </section>
 
       {/* About Section */}
@@ -69,4 +92,3 @@ export default function Home() {
     </div>
   );
 }
-

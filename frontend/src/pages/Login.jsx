@@ -4,6 +4,8 @@ import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import "../styles/Login.css";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -12,17 +14,12 @@ export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async e => {
     e.preventDefault();
     setError("");
     setLoading(true);
-
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/login", {
-        email,
-        password,
-      });
-
+      const response = await axios.post(`${API_URL}/api/auth/login`, { email, password });
       if (response.data.token) {
         login(response.data.token);
         navigate("/dashboard");
@@ -41,21 +38,11 @@ export default function Login() {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+            <input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
           </div>
           <div className="form-group">
             <label>Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
           </div>
           {error && <p className="error-message">{error}</p>}
           <button type="submit" disabled={loading} className="login-btn">
@@ -66,4 +53,3 @@ export default function Login() {
     </div>
   );
 }
-

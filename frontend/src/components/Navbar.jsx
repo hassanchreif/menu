@@ -5,7 +5,6 @@ import "../styles/Navbar.css";
 export default function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const isOwner = user?.role === "owner";
 
   const handleLogout = () => {
     logout();
@@ -15,26 +14,18 @@ export default function Navbar() {
   return (
     <nav className="navbar">
       <div className="navbar-brand">
-        <Link to="/">🍽️ Restaurant</Link>
+        <Link to="/">Restaurant</Link>
       </div>
       <div className="navbar-links">
         <Link to="/">Home</Link>
         <Link to="/menu">Menu</Link>
-        {isOwner ? (
-          <>
-            <Link to="/dashboard">Dashboard</Link>
-            <Link to="/add-dish">Add Dish</Link>
-            <button onClick={handleLogout} className="logout-btn">
-              Logout
-            </button>
-          </>
+        {user?.role === "owner" && <Link to="/dashboard">Dashboard</Link>}
+        {!user ? (
+          <Link to="/login" className="login-btn">Login</Link>
         ) : (
-          <Link to="/login" className="login-btn">
-            Login
-          </Link>
+          <button onClick={handleLogout} className="logout-btn">Logout</button>
         )}
       </div>
     </nav>
   );
 }
-

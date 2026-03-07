@@ -1,20 +1,19 @@
 import "../styles/CategoryFilter.css";
 
-const categories = ["All", "Pizza", "Burger", "Pasta", "Drinks", "Dessert"];
+const DEFAULT_CATEGORIES = ["All", "Pizza", "Burger", "Pasta", "Drinks", "Dessert"];
 
-export default function CategoryFilter({ value, onChange }) {
+export default function CategoryFilter({ value, onChange, categories = DEFAULT_CATEGORIES }) {
   return (
     <div className="category-filter">
-      {categories.map((category) => (
+      {categories.map(cat => (
         <button
-          key={category}
-          className={`category-btn ${value === category ? "active" : ""}`}
-          onClick={() => onChange(category)}
+          key={cat}
+          className={`category-btn ${value === cat ? "active" : ""}`}
+          onClick={() => onChange(cat)}
         >
-          {category}
+          {cat}
         </button>
       ))}
     </div>
   );
 }
-

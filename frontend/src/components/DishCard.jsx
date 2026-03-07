@@ -11,15 +11,11 @@ export default function DishCard({ dish, isOwner, onEdit, onDelete }) {
         <h3 className="dish-name">{dish.name}</h3>
         <p className="dish-description">{dish.description}</p>
         <div className="dish-footer">
-          <span className="dish-price">${dish.price}</span>
+          <span className="dish-price">${dish.price.toFixed(2)}</span>
           {isOwner && (
             <div className="dish-actions">
-              <button className="edit-btn" onClick={() => onEdit(dish)}>
-                Edit
-              </button>
-              <button className="delete-btn" onClick={() => onDelete(dish._id)}>
-                Delete
-              </button>
+              <button className="edit-btn" onClick={() => onEdit(dish)}>Edit</button>
+              <button className="delete-btn" onClick={() => onDelete(dish._id)}>Delete</button>
             </div>
           )}
         </div>
@@ -27,4 +23,3 @@ export default function DishCard({ dish, isOwner, onEdit, onDelete }) {
     </div>
   );
 }
-

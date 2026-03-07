@@ -1,26 +1,51 @@
+@import './variables.css';
+
 .menu-page {
-  padding: 2rem;
-  max-width: 1200px;
+  padding: 3rem 2rem;
+  max-width: var(--container-max);
   margin: 0 auto;
+  min-height: 80vh;
 }
 
-.menu-page h1 {
+.menu-header {
   text-align: center;
-  color: #1a472a;
-  margin-bottom: 2rem;
+  margin-bottom: 3rem;
+}
+
+.menu-header h1 {
+  color: var(--primary-dark);
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.menu-header p {
+  color: var(--text-muted);
+  font-size: 1.1rem;
 }
 
 .menu-controls {
   display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 2rem;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+  flex-wrap: wrap;
+  background: white;
+  padding: 1.5rem;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
 }
 
 .menu-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2rem;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .loading,
@@ -28,6 +53,25 @@
   text-align: center;
   font-size: 1.2rem;
   color: #666;
-  padding: 2rem;
+  padding: 3rem;
 }
 
+/* Responsive */
+@media (max-width: 768px) {
+  .menu-page {
+    padding: 2rem 1rem;
+  }
+  
+  .menu-header h1 {
+    font-size: 2rem;
+  }
+  
+  .menu-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .menu-grid {
+    grid-template-columns: 1fr;
+  }
+}
