@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { getAllDishes, deleteDish } from "../services/dishService";
+import { getAllDishes, deleteDish, toggleAvailability } from "../services/dishService";
 import "../styles/Dashboard.css";
 
 const API_URL = process.env.REACT_APP_API_URL;
@@ -40,6 +40,15 @@ export default function Dashboard() {
       fetchDishes(); 
     } catch (err) { 
       alert("Failed to delete dish"); 
+    }
+  };
+
+  const handleToggleAvailability = async id => {
+    try {
+      await toggleAvailability(id);
+      fetchDishes();
+    } catch (err) {
+      alert("Failed to update availability");
     }
   };
 
@@ -87,11 +96,14 @@ export default function Dashboard() {
                 <th>Name</th>
                 <th>Category</th>
                 <th>Price</th>
+                <th>Status</th>
                 <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {dishes.map(d => (
+              {dishes.map(d => {
+                const isAvailable = d.isAvailable !== false;
+                return (
                 <tr key={d._id}>
                   <td>
                     <img src={getImageUrl(d.image)} alt={d.name} className="table-dish-image" />
@@ -99,12 +111,23 @@ export default function Dashboard() {
                   <td>{d.name}</td>
                   <td><span className="category-badge">{d.category}</span></td>
                   <td>${d.price?.toFixed(2) || "0.00"}</td>
+                  <td>
+                    <span className={`status-badge ${isAvailable ? "available" : "unavailable"}`}>
+                      {isAvailable ? "Available" : "Out of Order"}
+                    </span>
+                  </td>
                   <td className="actions-cell">
+                    <button 
+                      className={`toggle-btn ${isAvailable ? "disable" : "enable"}`}
+                      onClick={() => handleToggleAvailability(d._id)}
+                    >
+                      {isAvailable ? "Disable" : "Enable"}
+                    </button>
                     <button className="edit-btn" onClick={() => navigate(`/edit-dish/${d._id}`)}>Edit</button>
                     <button className="delete-btn" onClick={() => handleDelete(d._id)}>Delete</button>
                   </td>
                 </tr>
-              ))}
+              )})}
             </tbody>
           </table>
         )}

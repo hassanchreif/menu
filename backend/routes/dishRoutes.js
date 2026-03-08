@@ -6,6 +6,7 @@ const {
   createDish,
   updateDish,
   deleteDish,
+  toggleAvailability,
 } = require("../controllers/dishController");
 
 const authMiddleware = require("../middleware/authMiddleware");
@@ -20,6 +21,9 @@ router.get("/:id", getDishById);
 router.post("/", authMiddleware, upload.single("image"), createDish);
 router.put("/:id", authMiddleware, upload.single("image"), updateDish);
 router.delete("/:id", authMiddleware, deleteDish);
+
+// Toggle dish availability (owner only)
+router.patch("/:id/availability", authMiddleware, toggleAvailability);
 
 module.exports = router;
 

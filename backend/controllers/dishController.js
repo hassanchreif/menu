@@ -181,3 +181,22 @@ exports.deleteDish = async (req, res) => {
   }
 };
 
+// Toggle dish availability
+exports.toggleAvailability = async (req, res) => {
+  try {
+    const dish = await Dish.findById(req.params.id);
+    if (!dish) {
+      return res.status(404).json({ message: "Dish not found" });
+    }
+
+    // Toggle the availability status
+    dish.isAvailable = !dish.isAvailable;
+    await dish.save();
+
+    res.json(dish);
+  } catch (error) {
+    console.error("Error toggling availability:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
+

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getAllDishes, deleteDish } from "../services/dishService";
+import { getAllDishes, deleteDish, toggleAvailability } from "../services/dishService";
 import { useAuth } from "../context/AuthContext";
 import DishCard from "../components/DishCard";
 import SearchBar from "../components/SearchBar";
@@ -55,6 +55,15 @@ export default function Menu() {
     }
   };
 
+  const handleToggleAvailability = async id => {
+    try {
+      await toggleAvailability(id);
+      fetchDishes();
+    } catch (err) {
+      alert("Failed to update availability");
+    }
+  };
+
   return (
     <div className="menu-page">
       <div className="menu-header">
@@ -91,7 +100,7 @@ export default function Menu() {
           <p className="dish-count">{filteredDishes.length} dish{filteredDishes.length !== 1 ? "es" : ""} found</p>
           <div className="menu-grid">
             {filteredDishes.map(dish => (
-              <DishCard key={dish._id} dish={dish} isOwner={isOwner} onEdit={handleEdit} onDelete={handleDelete} />
+              <DishCard key={dish._id} dish={dish} isOwner={isOwner} onEdit={handleEdit} onDelete={handleDelete} onToggleAvailability={handleToggleAvailability} />
             ))}
           </div>
         </>

@@ -51,3 +51,8 @@ export const deleteDish = async id => {
   const response = await axios.delete(`${API_URL}/${id}`, { headers: getAuthHeader() });
   return response.data;
 };
+
+export const toggleAvailability = async id => {
+  const response = await axios.patch(`${API_URL}/${id}/availability`, {}, { headers: getAuthHeader() });
+  return response.data;
+};
