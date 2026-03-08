@@ -1,4 +1,6 @@
 const Dish = require("../models/Dish");
+const fs = require("fs");
+const path = require("path");
 
 // Get all dishes
 exports.getAllDishes = async (req, res) => {
@@ -152,27 +154,20 @@ exports.deleteDish = async (req, res) => {
 
     // Delete the image file from disk if it exists and is a local file
     if (dish.image && !dish.image.startsWith("http")) {
-      // Extract filename from path (e.g., /uploads/dishes/filename.jpg or /uploads/members/filename.jpg)
+      // Extract filename from path (e.g., /uploads/dishes/filename.jpg)
       const filename = dish.image.split("/").pop();
       if (filename) {
-        const fs = require("fs");
-        const path = require("path");
-        
-        // Try both dishes and members folders
-        const dishesPath = path.join(__dirname, "../../uploads/dishes", filename);
-        const membersPath = path.join(__dirname, "../../uploads/members", filename);
-        
-        console.log("Trying dishes path:", dishesPath, "exists:", fs.existsSync(dishesPath));
-        console.log("Trying members path:", membersPath, "exists:", fs.existsSync(membersPath));
-        
-        if (fs.existsSync(dishesPath)) {
-          fs.unlinkSync(dishesPath);
-          console.log("Deleted from dishes folder");
-        } else if (fs.existsSync(membersPath)) {
-          fs.unlinkSync(membersPath);
-          console.log("Deleted from members folder");
+        // Construct the full path to the image file
+        // __dirname is backend/controllers, so .. goes to backend, then uploads/dishes
+        const imagePath = path.join(__dirname, "..", "uploads", "dishes", filename);
+        console.log("Full image path:", imagePath);
+
+        // Check if file exists and delete it
+        if (fs.existsSync(imagePath)) {
+          fs.unlinkSync(imagePath);
+          console.log("Successfully deleted image file:", filename);
         } else {
-          console.log("File not found in either folder");
+          console.log("Image file not found at path:", imagePath);
         }
       }
     }
