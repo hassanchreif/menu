@@ -41,7 +41,7 @@
   color: white;
   padding: 0.4rem 1rem;
   border-radius: var(--radius-full);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -91,18 +91,26 @@
 
 .dish-actions {
   display: flex;
-  gap: 0.6rem;
+  gap: 0.5rem;
 }
 
-.dish-actions .edit-btn,
-.dish-actions .delete-btn {
-  padding: 0.5rem 1rem;
+.dish-actions button {
+  padding: 0.5rem 0.85rem;
   border: none;
   border-radius: var(--radius-md);
   cursor: pointer;
-  font-size: 0.85rem;
-  font-weight: 500;
+  font-size: 0.8rem;
+  font-weight: 600;
   transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.dish-actions button svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
 }
 
 .dish-actions .edit-btn {
@@ -111,18 +119,43 @@
 }
 
 .dish-actions .edit-btn:hover {
-  transform: scale(1.05);
-  box-shadow: var(--shadow-sm);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(26, 71, 42, 0.3);
 }
 
 .dish-actions .delete-btn {
-  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
   color: white;
 }
 
 .dish-actions .delete-btn:hover {
-  transform: scale(1.05);
-  box-shadow: var(--shadow-sm);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(238, 90, 90, 0.3);
+}
+
+/* Toggle button */
+.dish-actions .toggle-btn {
+  padding: 0.5rem 0.85rem;
+}
+
+.dish-actions .toggle-btn.disable {
+  background: linear-gradient(135deg, #ffd43b 0%, #fcc419 100%);
+  color: #5c4812;
+}
+
+.dish-actions .toggle-btn.disable:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 212, 59, 0.35);
+}
+
+.dish-actions .toggle-btn.enable {
+  background: linear-gradient(135deg, #69db7c 0%, #51cf66 100%);
+  color: #1f9b3e;
+}
+
+.dish-actions .toggle-btn.enable:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(105, 219, 124, 0.35);
 }
 
 /* Unavailable state */
@@ -156,7 +189,7 @@
   color: white;
   padding: 0.75rem 1.5rem;
   border-radius: var(--radius-md);
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -168,41 +201,10 @@
   to { opacity: 1; }
 }
 
-/* Toggle button */
-.dish-actions .toggle-btn {
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  font-size: 0.85rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-.dish-actions .toggle-btn.disable {
-  background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
-  color: white;
-}
-
-.dish-actions .toggle-btn.disable:hover {
-  transform: scale(1.05);
-  box-shadow: var(--shadow-sm);
-}
-
-.dish-actions .toggle-btn.enable {
-  background: linear-gradient(135deg, #28a745 0%, #218838 100%);
-  color: white;
-}
-
-.dish-actions .toggle-btn.enable:hover {
-  transform: scale(1.05);
-  box-shadow: var(--shadow-sm);
-}
-
 /* Responsive */
-@media (max-width: 480px) {
+@media (max-width: 992px) {
   .dish-image-container {
-    height: 180px;
+    height: 200px;
   }
   
   .dish-content {
@@ -210,10 +212,110 @@
   }
   
   .dish-name {
+    font-size: 1.15rem;
+  }
+  
+  .dish-description {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .dish-image-container {
+    height: 180px;
+  }
+  
+  .dish-content {
+    padding: 1rem;
+  }
+  
+  .dish-name {
     font-size: 1.1rem;
+  }
+  
+  .dish-description {
+    font-size: 0.85rem;
+    -webkit-line-clamp: 2;
   }
   
   .dish-price {
     font-size: 1.2rem;
   }
+  
+  .dish-footer {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+  
+  .dish-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+  
+  .dish-actions button {
+    padding: 0.45rem 0.75rem;
+    font-size: 0.75rem;
+  }
 }
+
+@media (max-width: 480px) {
+  .dish-card {
+    border-radius: var(--radius-md);
+  }
+  
+  .dish-image-container {
+    height: 160px;
+  }
+  
+  .dish-category {
+    top: 10px;
+    right: 10px;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.65rem;
+  }
+  
+  .dish-content {
+    padding: 0.85rem;
+  }
+  
+  .dish-name {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .dish-description {
+    font-size: 0.8rem;
+    margin-bottom: 0.75rem;
+    -webkit-line-clamp: 2;
+  }
+  
+  .dish-price {
+    font-size: 1.1rem;
+  }
+  
+  .dish-footer {
+    padding-top: 0.75rem;
+    gap: 0.5rem;
+  }
+  
+  .dish-actions {
+    gap: 0.4rem;
+  }
+  
+  .dish-actions button {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.7rem;
+  }
+  
+  .dish-actions button svg {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .unavailable-text {
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+  }
+}
+

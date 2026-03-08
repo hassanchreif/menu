@@ -1,14 +1,27 @@
-/* AddDish page uses DishForm.css */
+/* AddDish page - uses DishForm.css for main styling */
 .add-dish-page {
   padding: 3rem 2rem;
   max-width: 700px;
   margin: 0 auto;
   min-height: 80vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
 }
 
-.add-dish-page h2 {
-  text-align: center;
-  color: var(--primary-dark);
-  margin-bottom: 2rem;
-  font-size: 2rem;
+/* Hide the old h2, we use form-header now */
+.add-dish-page > h2 {
+  display: none;
 }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .add-dish-page {
+    padding: 2rem 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .add-dish-page {
+    padding: 1.5rem 1rem;
+  }
+}
+

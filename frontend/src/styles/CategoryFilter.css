@@ -16,6 +16,7 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
 .category-btn:hover {
@@ -27,11 +28,14 @@
   background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-light) 100%);
   border-color: var(--primary-dark);
   color: white;
+  box-shadow: 0 4px 12px rgba(26, 71, 42, 0.25);
 }
 
-@media (max-width: 480px) {
+/* Responsive */
+@media (max-width: 768px) {
   .category-filter {
     justify-content: center;
+    gap: 0.4rem;
   }
   
   .category-btn {
@@ -39,3 +43,22 @@
     font-size: 0.85rem;
   }
 }
+
+@media (max-width: 480px) {
+  .category-filter {
+    gap: 0.35rem;
+  }
+  
+  .category-btn {
+    padding: 0.45rem 0.85rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .category-btn {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.75rem;
+  }
+}
+

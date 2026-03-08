@@ -1,17 +1,27 @@
+/* EditDish page - uses DishForm.css for main styling */
 .edit-dish-page {
-  padding: 2rem;
-  max-width: 600px;
+  padding: 3rem 2rem;
+  max-width: 700px;
   margin: 0 auto;
+  min-height: 80vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
 }
 
-.edit-dish-page h2 {
-  text-align: center;
-  color: #1a472a;
-  margin-bottom: 2rem;
+/* Hide the old h2, we use form-header now */
+.edit-dish-page > h2 {
+  display: none;
 }
 
-.edit-dish-page p {
-  text-align: center;
-  color: #666;
+/* Responsive */
+@media (max-width: 768px) {
+  .edit-dish-page {
+    padding: 2rem 1.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .edit-dish-page {
+    padding: 1.5rem 1rem;
+  }
 }
 
