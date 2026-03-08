@@ -3,6 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 import { getAllDishes, deleteDish } from "../services/dishService";
 import "../styles/Dashboard.css";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
+// Helper function to get full image URL
+const getImageUrl = (imagePath) => {
+  if (!imagePath) return "";
+  if (imagePath.startsWith("http")) return imagePath;
+  return `${API_URL}${imagePath}`;
+};
+
 export default function Dashboard() {
   const [dishes, setDishes] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -85,7 +94,7 @@ export default function Dashboard() {
               {dishes.map(d => (
                 <tr key={d._id}>
                   <td>
-                    <img src={d.image} alt={d.name} className="table-dish-image" />
+                    <img src={getImageUrl(d.image)} alt={d.name} className="table-dish-image" />
                   </td>
                   <td>{d.name}</td>
                   <td><span className="category-badge">{d.category}</span></td>

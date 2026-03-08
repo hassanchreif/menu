@@ -1,10 +1,20 @@
 import "../styles/DishCard.css";
 
+const API_URL = process.env.REACT_APP_API_URL;
+
 export default function DishCard({ dish, isOwner, onEdit, onDelete }) {
+  // Construct full image URL - handle both relative and absolute URLs
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return "";
+    if (imagePath.startsWith("http")) return imagePath;
+    // Prepend API URL for relative paths like /uploads/members/filename.jpg
+    return `${API_URL}${imagePath}`;
+  };
+
   return (
     <div className="dish-card">
       <div className="dish-image-container">
-        <img src={dish.image} alt={dish.name} className="dish-image" />
+        <img src={getImageUrl(dish.image)} alt={dish.name} className="dish-image" />
         <span className="dish-category">{dish.category}</span>
       </div>
       <div className="dish-content">

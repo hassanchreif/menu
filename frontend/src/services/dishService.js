@@ -18,12 +18,32 @@ export const getDishById = async id => {
 };
 
 export const createDish = async dishData => {
-  const response = await axios.post(API_URL, dishData, { headers: getAuthHeader() });
+  // Check if dishData contains a file (for image upload)
+  const hasFile = dishData instanceof FormData || dishData.image instanceof File;
+  
+  let config = {
+    headers: {
+      ...getAuthHeader(),
+      "Content-Type": dishData instanceof FormData ? "multipart/form-data" : "application/json",
+    },
+  };
+
+  const response = await axios.post(API_URL, dishData, config);
   return response.data;
 };
 
 export const updateDish = async (id, dishData) => {
-  const response = await axios.put(`${API_URL}/${id}`, dishData, { headers: getAuthHeader() });
+  // Check if dishData contains a file (for image upload)
+  const hasFile = dishData instanceof FormData || (dishData.image && dishData.image instanceof File);
+  
+  let config = {
+    headers: {
+      ...getAuthHeader(),
+      "Content-Type": dishData instanceof FormData ? "multipart/form-data" : "application/json",
+    },
+  };
+
+  const response = await axios.put(`${API_URL}/${id}`, dishData, config);
   return response.data;
 };
 

@@ -27,10 +27,10 @@ exports.getDishById = async (req, res) => {
 // Create new dish
 exports.createDish = async (req, res) => {
   try {
-    const { name, price, category, description, image } = req.body;
+    const { name, price, category, description } = req.body;
 
     // Validate required fields
-    if (!name || !price || !category || !description || !image) {
+    if (!name || !price || !category || !description) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -56,9 +56,16 @@ exports.createDish = async (req, res) => {
       return res.status(400).json({ message: "Description must be a non-empty string" });
     }
 
-    // Validate image is a non-empty string (URL)
-    if (typeof image !== "string" || image.trim().length === 0) {
-      return res.status(400).json({ message: "Image must be a valid URL" });
+    // Handle image: use uploaded file path or URL from body
+    let image;
+    if (req.file) {
+      // File was uploaded via Multer
+      image = `/uploads/dishes/${req.file.filename}`;
+    } else if (req.body.image) {
+      // Fallback to URL from body
+      image = req.body.image.trim();
+    } else {
+      return res.status(400).json({ message: "Image is required" });
     }
 
     const dish = new Dish({
@@ -66,7 +73,7 @@ exports.createDish = async (req, res) => {
       price: priceNum,
       category,
       description: description.trim(),
-      image: image.trim(),
+      image,
     });
     const savedDish = await dish.save();
     res.status(201).json(savedDish);
@@ -78,10 +85,10 @@ exports.createDish = async (req, res) => {
 // Update dish
 exports.updateDish = async (req, res) => {
   try {
-    const { name, price, category, description, image } = req.body;
+    const { name, price, category, description } = req.body;
 
     // Validate required fields
-    if (!name || !price || !category || !description || !image) {
+    if (!name || !price || !category || !description) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
@@ -107,14 +114,21 @@ exports.updateDish = async (req, res) => {
       return res.status(400).json({ message: "Description must be a non-empty string" });
     }
 
-    // Validate image is a non-empty string (URL)
-    if (typeof image !== "string" || image.trim().length === 0) {
-      return res.status(400).json({ message: "Image must be a valid URL" });
+    // Handle image: use uploaded file path or URL from body
+    let image;
+    if (req.file) {
+      // File was uploaded via Multer
+      image = `/uploads/dishes/${req.file.filename}`;
+    } else if (req.body.image) {
+      // Fallback to URL from body
+      image = req.body.image.trim();
+    } else {
+      return res.status(400).json({ message: "Image is required" });
     }
 
     const dish = await Dish.findByIdAndUpdate(
       req.params.id,
-      { name: name.trim(), price: priceNum, category, description: description.trim(), image: image.trim() },
+      { name: name.trim(), price: priceNum, category, description: description.trim(), image },
       { new: true, runValidators: true }
     );
     if (!dish) {
@@ -129,12 +143,45 @@ exports.updateDish = async (req, res) => {
 // Delete dish
 exports.deleteDish = async (req, res) => {
   try {
-    const dish = await Dish.findByIdAndDelete(req.params.id);
+    const dish = await Dish.findById(req.params.id);
     if (!dish) {
       return res.status(404).json({ message: "Dish not found" });
     }
+
+    console.log("Deleting dish image:", dish.image);
+
+    // Delete the image file from disk if it exists and is a local file
+    if (dish.image && !dish.image.startsWith("http")) {
+      // Extract filename from path (e.g., /uploads/dishes/filename.jpg or /uploads/members/filename.jpg)
+      const filename = dish.image.split("/").pop();
+      if (filename) {
+        const fs = require("fs");
+        const path = require("path");
+        
+        // Try both dishes and members folders
+        const dishesPath = path.join(__dirname, "../../uploads/dishes", filename);
+        const membersPath = path.join(__dirname, "../../uploads/members", filename);
+        
+        console.log("Trying dishes path:", dishesPath, "exists:", fs.existsSync(dishesPath));
+        console.log("Trying members path:", membersPath, "exists:", fs.existsSync(membersPath));
+        
+        if (fs.existsSync(dishesPath)) {
+          fs.unlinkSync(dishesPath);
+          console.log("Deleted from dishes folder");
+        } else if (fs.existsSync(membersPath)) {
+          fs.unlinkSync(membersPath);
+          console.log("Deleted from members folder");
+        } else {
+          console.log("File not found in either folder");
+        }
+      }
+    }
+
+    // Delete the dish from MongoDB
+    await Dish.findByIdAndDelete(req.params.id);
     res.json({ message: "Dish deleted successfully" });
   } catch (error) {
+    console.error("Error deleting dish:", error);
     res.status(500).json({ message: error.message });
   }
 };
