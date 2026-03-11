@@ -6,6 +6,8 @@ const fs = require("fs");
 
 const authRoutes = require("./routes/authRoutes");
 const dishRoutes = require("./routes/dishRoutes");
+const orderRoutes = require("./routes/orderRoutes");
+const tableRoutes = require("./routes/tableRoutes");
 
 const app = express();
 
@@ -32,6 +34,8 @@ app.use("/uploads", express.static("uploads/dishes"));
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/dishes", dishRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/tables", tableRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI)

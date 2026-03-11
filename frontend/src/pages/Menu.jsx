@@ -19,6 +19,14 @@ export default function Menu() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const isOwner = user?.role === "owner";
+  const isCustomer = user?.role === "customer";
+
+  // Redirect if not logged in or not a customer
+  useEffect(() => {
+    if (!user || (!isOwner && !isCustomer)) {
+      navigate("/");
+    }
+  }, [user, isOwner, isCustomer, navigate]);
 
   const fetchDishes = async () => {
     setLoading(true);

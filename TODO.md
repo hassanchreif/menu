@@ -1,9 +1,21 @@
-# Image Upload Implementation - TODO
+# Table PIN System Implementation
 
-## Progress Tracking
+## Backend
 
-- [x] 1. Update backend/routes/dishRoutes.js - Add Multer middleware
-- [x] 2. Update backend/controllers/dishController.js - Handle file path
-- [x] 3. Update frontend/src/services/dishService.js - Use FormData
-- [x] 4. Update frontend/src/pages/AddDish.jsx - Add file input
-- [x] 5. Update frontend/src/pages/EditDish.jsx - Add file input
+- [x] 1. Table model exists with PIN (already done)
+- [x] 2. Table controller exists with PIN functions (already done)
+- [x] 3. Create tableRoutes.js and register in server.js
+- [x] 4. Modify orderController to verify PIN before creating order
+
+## Frontend
+
+- [x] 5. Create tableService.js for API calls
+- [x] 6. Modify CartContext to handle PIN state
+- [x] 7. Modify Cart.jsx to ask for PIN before placing order
+- [x] 8. Modify Dashboard.jsx to add table management section
+- [x] 9. Add table management styles in Dashboard.css
+
+## Testing
+
+- [ ] 10. Test PIN verification flow
+- [ ] 11. Test owner table management

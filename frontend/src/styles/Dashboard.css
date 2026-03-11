@@ -671,3 +671,362 @@
   }
 }
 
+/* Dashboard Tabs */
+.dashboard-tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  background: white;
+  padding: 0.5rem;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 1rem 1.5rem;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: var(--radius-lg);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.tab-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+
+.tab-btn:hover {
+  background: rgba(26, 71, 42, 0.05);
+  color: var(--primary-dark);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-light) 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(26, 71, 42, 0.25);
+}
+
+/* Tables Stats Icons */
+.stat-card-icon.tables {
+  background: linear-gradient(135deg, rgba(33, 150, 243, 0.15) 0%, rgba(33, 150, 243, 0.05) 100%);
+}
+
+.stat-card-icon.tables svg {
+  fill: #2196f3;
+}
+
+.stat-card-icon.active-tables {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.15) 0%, rgba(76, 175, 80, 0.05) 100%);
+}
+
+.stat-card-icon.active-tables svg {
+  fill: #4caf50;
+}
+
+/* Tables Info Banner */
+.tables-info-banner {
+  background: linear-gradient(135deg, rgba(33, 150, 243, 0.1) 0%, rgba(33, 150, 243, 0.05) 100%);
+  border-left: 4px solid #2196f3;
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 2rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.tables-info-banner svg {
+  width: 24px;
+  height: 24px;
+  fill: #2196f3;
+  flex-shrink: 0;
+}
+
+.tables-info-banner strong {
+  display: block;
+  color: var(--primary-dark);
+  margin-bottom: 0.25rem;
+}
+
+.tables-info-banner p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* Tables Grid */
+.tables-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.table-card {
+  background: white;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.table-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg);
+}
+
+.table-card.inactive {
+  opacity: 0.7;
+}
+
+.table-card-header {
+  padding: 1.25rem 1.5rem;
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-light) 100%);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.table-card.inactive .table-card-header {
+  background: linear-gradient(135deg, #9e9e9e 0%, #757575 100%);
+}
+
+.table-number {
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.table-status {
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.table-status.active {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.table-status.inactive {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+}
+
+.table-card-body {
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.table-pin-display {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.pin-label {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.pin-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--primary-dark);
+  letter-spacing: 0.3rem;
+}
+
+.pin-note {
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  font-style: italic;
+}
+
+.table-pin-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.table-pin-edit label {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.table-pin-edit input {
+  padding: 0.75rem;
+  border: 2px solid var(--primary-dark);
+  border-radius: var(--radius-md);
+  font-size: 1.25rem;
+  text-align: center;
+  letter-spacing: 0.3rem;
+}
+
+.table-pin-edit input:focus {
+  outline: none;
+  border-color: var(--primary-gold);
+}
+
+.table-pin-edit-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.table-pin-edit-actions .save-btn,
+.table-pin-edit-actions .cancel-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.table-pin-edit-actions .save-btn {
+  background: var(--primary-dark);
+  color: white;
+}
+
+.table-pin-edit-actions .save-btn:hover {
+  background: var(--primary-light);
+}
+
+.table-pin-edit-actions .cancel-btn {
+  background: #f5f5f5;
+  color: var(--text-muted);
+}
+
+.table-pin-edit-actions .cancel-btn:hover {
+  background: #e0e0e0;
+}
+
+.table-card-actions {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  gap: 0.5rem;
+}
+
+.edit-pin-btn,
+.reset-pin-btn {
+  flex: 1;
+  padding: 0.6rem 0.75rem;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.edit-pin-btn svg,
+.reset-pin-btn svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+.edit-pin-btn {
+  background: linear-gradient(135deg, rgba(26, 71, 42, 0.1) 0%, rgba(26, 71, 42, 0.05) 100%);
+  color: var(--primary-dark);
+}
+
+.edit-pin-btn:hover {
+  background: var(--primary-dark);
+  color: white;
+}
+
+.reset-pin-btn {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0.05) 100%);
+  color: #f59f00;
+}
+
+.reset-pin-btn:hover {
+  background: #f59f00;
+  color: white;
+}
+
+.toggle-table-btn {
+  flex: 1;
+  padding: 0.6rem;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  white-space: nowrap;
+}
+
+.toggle-table-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+.toggle-table-btn.activate {
+  background: linear-gradient(135deg, rgba(76, 175, 80, 0.15) 0%, rgba(76, 175, 80, 0.05) 100%);
+  color: #4caf50;
+}
+
+.toggle-table-btn.activate:hover {
+  background: #4caf50;
+  color: white;
+}
+
+.toggle-table-btn.deactivate {
+  background: linear-gradient(135deg, rgba(244, 67, 54, 0.15) 0%, rgba(244, 67, 54, 0.05) 100%);
+  color: #f44336;
+}
+
+.toggle-table-btn.deactivate:hover {
+  background: #f44336;
+  color: white;
+}
+
+/* Responsive for Tables */
+@media (max-width: 768px) {
+  .dashboard-tabs {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .tab-btn {
+    padding: 0.85rem 1rem;
+  }
+  
+  .tables-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .tables-info-banner {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .tables-info-banner svg {
+    margin: 0 auto;
+  }
+}
+

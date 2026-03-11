@@ -15,7 +15,7 @@ export default function Home() {
     setError("");
     try {
       const dishes = await getAllDishes();
-      setFeaturedDishes(dishes.slice(0, 8)); // Get up to 8 dishes
+      setFeaturedDishes(dishes.slice(0, 8));
     } catch (err) {
       setError("Unable to load featured dishes. Please try again later.");
     } finally {
@@ -27,7 +27,6 @@ export default function Home() {
     fetchDishes();
   }, [fetchDishes]);
 
-  // Auto-advance
   useEffect(() => {
     if (featuredDishes.length <= 1) return;
     
@@ -50,7 +49,6 @@ export default function Home() {
     setCurrentIndex((prev) => (prev - 1 + featuredDishes.length) % featuredDishes.length);
   };
 
-  // Calculate visible cards for the carousel effect
   const getVisibleCards = () => {
     if (featuredDishes.length <= 3) return featuredDishes;
     const cards = [];
@@ -63,29 +61,50 @@ export default function Home() {
 
   return (
     <div className="home">
-      {/* Hero Section */}
-      <section className="hero">
-        <div className="hero-content">
-          <span className="hero-badge">Premium Dining Experience</span>
-          <h1>
-            Welcome to <span>Our Restaurant</span>
-          </h1>
-          <p>Discover the finest culinary experience with our carefully crafted dishes made from fresh, locally-sourced ingredients</p>
-          <div className="hero-buttons">
-            <Link to="/menu" className="hero-btn">
-              View Menu
-              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
-                <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
+      <section className="welcome-section">
+        <div className="welcome-content">
+          <h2>Welcome to Our Restaurant</h2>
+          <p>How would you like to proceed?</p>
+          <div className="welcome-buttons">
+            <Link to="/table-login" className="welcome-btn customer-btn">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+                <path d="M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/>
               </svg>
+              <div className="welcome-btn-text">
+                <span className="welcome-btn-title">I'm a Customer</span>
+                <span className="welcome-btn-desc">Enter table PIN to order</span>
+              </div>
             </Link>
-            <Link to="/menu" className="hero-btn-secondary">
-              Reserve a Table
+            <Link to="/login" className="welcome-btn owner-btn">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+              </svg>
+              <div className="welcome-btn-text">
+                <span className="welcome-btn-title">I'm the Owner</span>
+                <span className="welcome-btn-desc">Manage your restaurant</span>
+              </div>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* Featured Dishes Carousel */}
+      <section className="hero">
+        <div className="hero-content">
+          <span className="hero-badge">Premium Dining Experience</span>
+          <h1>Welcome to <span>Our Restaurant</span></h1>
+          <p>Discover the finest culinary experience with our carefully crafted dishes made from fresh, locally-sourced ingredients</p>
+          <div className="hero-buttons">
+            <Link to="/table-login" className="hero-btn">
+              Order Now
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                <path d="M8.59 16.59L10 18l6-6-6-6-1.41 1.41L13.17 12z"/>
+              </svg>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       <section className="featured-section">
         <h2>Featured Dishes</h2>
         
@@ -101,11 +120,6 @@ export default function Home() {
         ) : featuredDishes.length === 0 ? (
           <div className="empty-state">
             <p>No dishes available yet. Check back soon!</p>
-            <Link to="/menu" className="view-all-btn">Browse Menu</Link>
-          </div>
-        ) : featuredDishes.length === 1 ? (
-          <div className="single-dish-container">
-            <DishCard dish={featuredDishes[0]} isOwner={false} />
           </div>
         ) : (
           <>
@@ -119,10 +133,7 @@ export default function Home() {
               <div className="carousel-track-container">
                 <div className="carousel-track">
                   {getVisibleCards().map((item, idx) => (
-                    <div 
-                      key={`${item.dish._id}-${idx}`}
-                      className={`carousel-card-wrapper position-${item.position}`}
-                    >
+                    <div key={`${item.dish._id}-${idx}`} className={`carousel-card-wrapper position-${item.position}`}>
                       <div className="carousel-card">
                         <DishCard dish={item.dish} isOwner={false} />
                       </div>
@@ -140,29 +151,16 @@ export default function Home() {
             
             <div className="carousel-dots">
               {featuredDishes.map((_, index) => (
-                <button
-                  key={index}
-                  className={`carousel-dot ${index === currentIndex ? 'active' : ''}`}
-                  onClick={() => goToSlide(index)}
-                />
+                <button key={index} className={`carousel-dot ${index === currentIndex ? 'active' : ''}`} onClick={() => goToSlide(index)} />
               ))}
-            </div>
-            
-            <div className="featured-cta">
-              <Link to="/menu" className="view-all-btn">View All Dishes</Link>
             </div>
           </>
         )}
       </section>
 
-      {/* About Section */}
       <section className="about-section">
         <h2>About Our Restaurant</h2>
-        <p>
-          We serve the finest cuisine with fresh ingredients and authentic recipes.
-          Our chefs craft each dish with love and precision to bring you an
-          unforgettable dining experience.
-        </p>
+        <p>We serve the finest cuisine with fresh ingredients and authentic recipes.</p>
         <div className="about-features">
           <div className="about-feature">
             <div className="about-feature-icon">
@@ -182,19 +180,9 @@ export default function Home() {
             <h3>Quality Assurance</h3>
             <p>Best in class service</p>
           </div>
-          <div className="about-feature">
-            <div className="about-feature-icon">
-              <svg viewBox="0 0 24 24">
-                <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
-              </svg>
-            </div>
-            <h3>Quick Service</h3>
-            <p>Fast & efficient</p>
-          </div>
         </div>
       </section>
 
-      {/* Contact Section */}
       <section className="contact-section">
         <h2>Get In Touch</h2>
         <p className="contact-subtitle">We'd love to hear from you</p>
@@ -221,19 +209,9 @@ export default function Home() {
               <p>(123) 456-7890</p>
             </div>
           </div>
-          <div className="contact-item">
-            <div className="contact-item-icon">
-              <svg viewBox="0 0 24 24">
-                <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-              </svg>
-            </div>
-            <div className="contact-item-text">
-              <span>Email</span>
-              <p>info@restaurant.com</p>
-            </div>
-          </div>
         </div>
       </section>
     </div>
   );
 }
+

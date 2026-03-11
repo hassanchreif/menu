@@ -4,6 +4,146 @@
   min-height: 100vh;
 }
 
+/* Welcome Selection Section */
+.welcome-section {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 4rem 2rem;
+  text-align: center;
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.welcome-content h2 {
+  color: var(--primary-dark);
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.welcome-content > p {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  margin-bottom: 2.5rem;
+}
+
+.welcome-buttons {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.welcome-btn {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+  border-radius: var(--radius-xl);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  min-width: 240px;
+  box-shadow: var(--shadow-md);
+}
+
+.welcome-btn svg {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+}
+
+.welcome-btn-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.welcome-btn-title {
+  font-size: 1rem;
+  font-weight: 600;
+  display: block;
+}
+
+.welcome-btn-desc {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  display: block;
+}
+
+/* Customer Button */
+.customer-btn {
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-light) 100%);
+  color: white;
+}
+
+.customer-btn svg {
+  fill: var(--primary-gold);
+}
+
+.customer-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(26, 71, 42, 0.35);
+}
+
+/* Owner Button */
+.owner-btn {
+  background: white;
+  color: var(--primary-dark);
+  border: 2px solid var(--primary-dark);
+}
+
+.owner-btn svg {
+  fill: var(--primary-dark);
+}
+
+.owner-btn:hover {
+  background: var(--primary-dark);
+  color: white;
+}
+
+.owner-btn:hover svg {
+  fill: white;
+}
+
+@media (max-width: 576px) {
+  .welcome-section {
+    padding: 3rem 1rem;
+  }
+  
+  .welcome-content h2 {
+    font-size: 1.5rem;
+  }
+  
+  .welcome-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .welcome-btn {
+    width: 100%;
+    max-width: 280px;
+    justify-content: center;
+  }
+  
+  .welcome-btn-text {
+    align-items: center;
+    text-align: center;
+  }
+}
+
+.welcome-note {
+  margin-top: 1.5rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
 /* Hero Section */
 .hero {
   background: linear-gradient(135deg, rgba(15, 31, 23, 0.92) 0%, rgba(26, 71, 42, 0.85) 50%, rgba(15, 31, 23, 0.92) 100%),

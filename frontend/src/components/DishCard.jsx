@@ -1,17 +1,20 @@
 import "../styles/DishCard.css";
+import { useCart } from "../context/CartContext";
+import { useAuth } from "../context/AuthContext";
 
 const API_URL = process.env.REACT_APP_API_URL;
 
 export default function DishCard({ dish, isOwner, onEdit, onDelete, onToggleAvailability }) {
-  // Construct full image URL - handle both relative and absolute URLs
+  const { addToCart } = useCart();
+  const { user } = useAuth();
+  const isCustomer = user?.role === "customer";
+  
   const getImageUrl = (imagePath) => {
     if (!imagePath) return "";
     if (imagePath.startsWith("http")) return imagePath;
-    // Prepend API URL for relative paths like /uploads/members/filename.jpg
     return `${API_URL}${imagePath}`;
   };
 
-  // Check if dish is available (default to true if field doesn't exist)
   const isAvailable = dish.isAvailable !== false;
 
   return (
@@ -30,6 +33,14 @@ export default function DishCard({ dish, isOwner, onEdit, onDelete, onToggleAvai
         <p className="dish-description">{dish.description}</p>
         <div className="dish-footer">
           <span className="dish-price">${dish.price.toFixed(2)}</span>
+          {isCustomer && isAvailable && (
+            <button className="add-to-cart-btn" onClick={() => addToCart(dish)} title="Add to cart">
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+              </svg>
+              <span>Add</span>
+            </button>
+          )}
           {isOwner && (
             <div className="dish-actions">
               <button 
