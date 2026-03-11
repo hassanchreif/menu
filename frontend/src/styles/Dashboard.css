@@ -328,13 +328,39 @@
   cursor: pointer;
   font-size: 0.75rem;
   font-weight: 600;
-  transition: all 0.25s ease;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
   text-transform: uppercase;
   letter-spacing: 0.3px;
   white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+}
+
+.edit-btn::before,
+.delete-btn::before,
+.toggle-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.edit-btn:hover::before,
+.delete-btn:hover::before,
+.toggle-btn:hover::before {
+  left: 100%;
 }
 
 .edit-btn svg,
@@ -343,29 +369,40 @@
   width: 14px;
   height: 14px;
   fill: currentColor;
+  transition: transform 0.2s ease;
+}
+
+.edit-btn:hover svg,
+.delete-btn:hover svg,
+.toggle-btn:hover svg {
+  transform: scale(1.1);
 }
 
 .edit-btn {
-  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-light) 100%);
+  background: linear-gradient(135deg, #1a472a 0%, #2d5a3a 50%, #3d7a4a 100%);
   color: white;
-  box-shadow: 0 2px 8px rgba(26, 71, 42, 0.2);
+  box-shadow: 0 3px 10px rgba(26, 71, 42, 0.3),
+              inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .edit-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(26, 71, 42, 0.35);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(26, 71, 42, 0.4),
+              inset 0 1px 0 rgba(255, 255, 255, 0.2);
   color: white;
 }
 
 .delete-btn {
-  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a5a 100%);
+  background: linear-gradient(135deg, #e53935 0%, #c62828 50%, #b71c1c 100%);
   color: white;
-  box-shadow: 0 2px 8px rgba(238, 90, 90, 0.2);
+  box-shadow: 0 3px 10px rgba(229, 57, 53, 0.3),
+              inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .delete-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(238, 90, 90, 0.35);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(229, 57, 53, 0.4),
+              inset 0 1px 0 rgba(255, 255, 255, 0.2);
   color: white;
 }
 
@@ -375,25 +412,29 @@
 }
 
 .actions-cell .toggle-btn.disable {
-  background: linear-gradient(135deg, #ffd43b 0%, #fcc419 100%);
-  color: #5c4812;
-  box-shadow: 0 2px 8px rgba(255, 212, 59, 0.25);
+  background: linear-gradient(135deg, #f59f00 0%, #f08c00 50%, #e67700 100%);
+  color: #5c3d0a;
+  box-shadow: 0 3px 10px rgba(245, 158, 11, 0.35),
+              inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .actions-cell .toggle-btn.disable:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(255, 212, 59, 0.4);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(245, 158, 11, 0.45),
+              inset 0 1px 0 rgba(255, 255, 255, 0.25);
 }
 
 .actions-cell .toggle-btn.enable {
-  background: linear-gradient(135deg, #69db7c 0%, #51cf66 100%);
-  color: #1f9b3e;
-  box-shadow: 0 2px 8px rgba(105, 219, 124, 0.25);
+  background: linear-gradient(135deg, #40c057 0%, #2f9e44 50%, #2b8a3e 100%);
+  color: white;
+  box-shadow: 0 3px 10px rgba(64, 192, 87, 0.35),
+              inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .actions-cell .toggle-btn.enable:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(105, 219, 124, 0.4);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(64, 192, 87, 0.45),
+              inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 /* Loading */
