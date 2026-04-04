@@ -15,7 +15,9 @@ export default function Home() {
     setError("");
     try {
       const dishes = await getAllDishes();
-      setFeaturedDishes(dishes.slice(0, 8));
+      // Filter out undefined/null dishes and limit to 8
+      const validDishes = (dishes || []).slice(0, 8);
+      setFeaturedDishes(validDishes);
     } catch (err) {
       setError("Unable to load featured dishes. Please try again later.");
     } finally {
@@ -50,11 +52,13 @@ export default function Home() {
   };
 
   const getVisibleCards = () => {
-    if (featuredDishes.length <= 3) return featuredDishes;
     const cards = [];
     for (let i = -1; i <= 1; i++) {
       const index = (currentIndex + i + featuredDishes.length) % featuredDishes.length;
-      cards.push({ dish: featuredDishes[index], position: i });
+      const dish = featuredDishes[index];
+      if (dish) {
+        cards.push({ dish, position: i });
+      }
     }
     return cards;
   };
@@ -133,7 +137,7 @@ export default function Home() {
               <div className="carousel-track-container">
                 <div className="carousel-track">
                   {getVisibleCards().map((item, idx) => (
-                    <div key={`${item.dish._id}-${idx}`} className={`carousel-card-wrapper position-${item.position}`}>
+                    <div key={`carousel-${idx}`} className={`carousel-card-wrapper position-${item.position}`}>
                       <div className="carousel-card">
                         <DishCard dish={item.dish} isOwner={false} />
                       </div>
