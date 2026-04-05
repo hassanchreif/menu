@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
 import Navbar from "./components/Navbar";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Home from "./pages/Home";
 import Menu from "./pages/Menu";
 import Cart from "./pages/Cart";
@@ -25,11 +26,31 @@ function App() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/login" element={<Login />} />
             <Route path="/table-login" element={<TableLogin />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/add-dish" element={<AddDish />} />
-            <Route path="/edit-dish/:id" element={<EditDish />} />
-            <Route path="/orders" element={<Orders />} />
-            <Route path="/order-history" element={<OrderHistory />} />
+            <Route path="/dashboard" element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            } />
+            <Route path="/add-dish" element={
+              <ProtectedRoute>
+                <AddDish />
+              </ProtectedRoute>
+            } />
+            <Route path="/edit-dish/:id" element={
+              <ProtectedRoute>
+                <EditDish />
+              </ProtectedRoute>
+            } />
+            <Route path="/orders" element={
+              <ProtectedRoute>
+                <Orders />
+              </ProtectedRoute>
+            } />
+            <Route path="/order-history" element={
+              <ProtectedRoute>
+                <OrderHistory />
+              </ProtectedRoute>
+            } />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </BrowserRouter>

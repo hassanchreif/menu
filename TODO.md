@@ -1,6 +1,13 @@
-# Fix Home.jsx undefined \_id error
+# Security Fix: Protect Dashboard Route TODO
 
-- [ ] Step 1: Create TODO.md with plan steps ✓
-- [x] Step 2: Update frontend/src/pages/Home.jsx with defensive null checks and filtering
-- [x] Step 3: Test Home page loads without error
-- [x] Step 4: Mark complete
+## Steps:
+
+- [x] 1. Understand files and create plan (completed)
+- [x] 2. Create `frontend/src/components/ProtectedRoute.jsx`
+- [x] 3. Update `frontend/src/App.jsx` to use ProtectedRoute for owner routes (/dashboard, /add-dish, /edit-dish/:id, /orders, /order-history)
+- [x] 4. Add backup auth guard to `frontend/src/pages/Dashboard.jsx`
+- [x] 5. Update other protected pages if needed (Orders.jsx, etc.)
+- [x] 6. Test: logout → /dashboard redirects to login; login works
+- [x] 7. Mark complete
+
+**Current progress**: ProtectedRoute created and App.jsx routes protected.

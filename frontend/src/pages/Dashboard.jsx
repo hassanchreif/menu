@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 import { getAllDishes, deleteDish, toggleAvailability } from "../services/dishService";
 import { getAllTables, updateTablePin, resetTablePin, initializeTables } from "../services/tableService";
 import "../styles/Dashboard.css";
@@ -15,6 +16,16 @@ const getImageUrl = (imagePath) => {
 };
 
 export default function Dashboard() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
+  }, [user, navigate]);
+
   const [dishes, setDishes] = useState([]);
   const [tables, setTables] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -22,7 +33,6 @@ export default function Dashboard() {
   const [activeTab, setActiveTab] = useState("dishes");
   const [editingTable, setEditingTable] = useState(null);
   const [newPin, setNewPin] = useState("");
-  const navigate = useNavigate();
 
   const fetchDishes = async () => {
     setLoading(true);
